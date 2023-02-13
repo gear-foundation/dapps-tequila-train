@@ -85,6 +85,8 @@ jobs:
       - name: Upload artifacts
         #if: github.event_name == 'push' # TODO: Uncomment
         uses: actions/upload-artifact@v3
+        with:
+          path: ./artifact/*
 
   upload:
     if: github.event_name == 'push'
