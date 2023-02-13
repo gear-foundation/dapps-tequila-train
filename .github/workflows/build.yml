@@ -77,7 +77,7 @@ jobs:
         run: cd frontend && npm run build
 
       - name: Prepare artifacts
-        run:
+        run: |
           mkdir -p artifact
           cd frontend
           XZ_OPT=-9 tar -cvJf ../artifact/frontend.tar.xz index.html
