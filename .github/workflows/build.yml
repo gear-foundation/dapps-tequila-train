@@ -11,6 +11,7 @@ env:
 
 jobs:
   build-contracts:
+    if: false # TODO: Remove
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -56,12 +57,41 @@ jobs:
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v3
         with:
-          path: ./target/wasm32-unknown-unknown/release/*.wasm
+          path: ./contracts/target/wasm32-unknown-unknown/release/*.wasm
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Prepare artifacts
+        run:
+          mkdir -p artifact
+          cd frontend
+          XZ_OPT=-9 tar -cvJf ../artifact/frontend.tar.xz index.html
+
+      - name: Upload artifacts
+        #if: github.event_name == 'push' # TODO: Uncomment
+        uses: actions/upload-artifact@v3
 
   upload:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    needs: build-contracts
+    needs:
+      - build-contracts
+      - build-frontend
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
