@@ -18,7 +18,8 @@ jobs:
 
       - name: Artifact cache
         uses: Swatinem/rust-cache@v2
-        workspaces: |
+        with:
+          workspaces: |
             contracts -> target
 
       - name: Remove binaries from cache
@@ -46,10 +47,10 @@ jobs:
 
       - name: Run tests
         if: github.event_name == 'pull_request'
-        run: make test
+        run: make test-contracts
 
       - name: Build
-        run: make
+        run: make contracts
 
       - name: Upload artifacts
         if: github.event_name == 'push'
@@ -60,7 +61,7 @@ jobs:
   upload:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-contracts
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
@@ -79,6 +80,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: true
           tag_name: build
-          draft: false
-          fail_on_unmatched_files: true
-          files: artifact/*.wasm
+          files: artifact/*
