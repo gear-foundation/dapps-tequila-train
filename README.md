@@ -69,8 +69,6 @@ cargo test --release
 make test-contracts
 ```
 
-
-
 ### Frontend
 
 #### Install yarn
@@ -82,19 +80,37 @@ npm install --global yarn
 #### ⚒️ Install deps
 
 ```shell
-yarn
+cd frontend && yarn
+```
+
+... or ...
+
+```shell
+make init-frontend
 ```
 
 #### 🏗️ Build
 
 ```shell
-yarn build
+cd frontend && yarn build
+```
+
+... or ...
+
+```shell
+make frontend
 ```
 
 #### 🐱‍💻 Serve
 
 ```shell
-yarn start
+cd frontend && yarn start
+```
+
+... or ...
+
+```shell
+make serve
 ```
 
 ## 🚀 Run everything with one command
