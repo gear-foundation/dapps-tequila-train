@@ -76,10 +76,7 @@ pub struct Tile {
 
 impl Tile {
     pub fn new(first: Face, second: Face) -> Self {
-        Self {
-            first,
-            second,
-        }
+        Self { first, second }
     }
 
     pub fn is_double(&self) -> bool {
@@ -101,14 +98,11 @@ pub fn build_tile_collection() -> Vec<Tile> {
         .map(|(i, face_first)| {
             enum_iterator::all::<Face>()
                 .skip(i)
-                .map(move |face_second| {
-                    Tile::new(face_first, face_second)
-                })
+                .map(move |face_second| Tile::new(face_first, face_second))
         })
         .flatten()
         .collect()
 }
-
 
 pub struct Players {
     first: ActorId,
@@ -116,12 +110,48 @@ pub struct Players {
     others: Vec<ActorId>,
 }
 
-pub enum Command {
+// Type to identify the tile
+#[derive(Debug, Clone, Copy, Ord, PartialOrd, Eq, PartialEq)]
+struct TileId(Face, Face);
+
+#[derive(Debug, Clone, Copy, Ord, PartialOrd, Eq, PartialEq)]
+// A number to identify one of trace
+struct TraceId(u32);
+
+// Struct of payload to send move
+#[derive(Debug, Clone, Copy, Ord, PartialOrd, Eq, PartialEq)]
+pub enum GameMove {
+    // Try to set a tile to a gameboard
+    SetTile {
+        tile_id: TileId,
+        trace_id: TraceId,
+        getting_train_back: bool,
+    },
+    // Try to set a train to your trace
+    SetTrain {
+        trace_id: TraceId,
+    },
+    // Skip the move and get new tile
     Skip,
-    Place {
-        tile_id: u32,
-        track_id: u32,
-    }
+    // Surrender and stop the game
+    Surrender,
+}
+
+// Status to identify was the move correct or not
+#[derive(Debug, Clone, Copy, Ord, PartialOrd, Eq, PartialEq)]
+enum ReplyStatus {
+    // Move correct
+    Success,
+    // User have no tile that is tryed to be set
+    ErrorTileNotFound,
+    // Invalid move turn
+    ErrorNotYourTurnToMove,
+    // Cannot set tile on given trace
+    ErrorTileInvalid,
+    // Cannot get back train
+    ErrorTrainNotSet,
+    // Cannot set train 'cause it's already set for current user
+    ErrorTrainAlreadySet,
 }
 
 pub struct TrackData {
