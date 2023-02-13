@@ -11,7 +11,6 @@ env:
 
 jobs:
   build-contracts:
-    if: false # TODO: Remove
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -83,7 +82,7 @@ jobs:
           XZ_OPT=-9 tar -cvJf ../artifact/frontend.tar.xz index.html
 
       - name: Upload artifacts
-        #if: github.event_name == 'push' # TODO: Uncomment
+        if: github.event_name == 'push'
         uses: actions/upload-artifact@v3
         with:
           path: ./artifact/*
