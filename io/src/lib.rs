@@ -50,3 +50,57 @@ pub enum StateQueryReply {
     Pingers(Vec<ActorId>),
     PingCount(u128),
 }
+
+#[derive(Debug, Clone, Copy, Ord, PartialOrd, Eq, PartialEq, enum_iterator::Sequence)]
+pub enum Face {
+    Zero,
+    One,
+    Two,
+    Three,
+    Four,
+    Five,
+    Six,
+    Seven,
+    Eight,
+    Nine,
+    Ten,
+    Eleven,
+    Twelve,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Tile {
+    first: Face,
+    second: Face,
+}
+
+impl Tile {
+    pub fn new(first: Face, second: Face) -> Self {
+        Self {
+            first,
+            second,
+        }
+    }
+
+    pub fn can_be_stacked(&self, face: Face) -> Option<Face> {
+        if self.first == face {
+            return Some(self.second);
+        }
+
+        (self.second == face).then_some(self.first)
+    }
+}
+
+pub fn build_tile_collection() -> Vec<Tile> {
+    enum_iterator::all::<Face>()
+        .enumerate()
+        .map(|(i, face_first)| {
+            enum_iterator::all::<Face>()
+                .skip(i)
+                .map(move |face_second| {
+                    Tile::new(face_first, face_second)
+                })
+        })
+        .flatten()
+        .collect()
+}
