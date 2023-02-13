@@ -3,8 +3,6 @@ name: Build
 on:
   push:
     branches: [master]
-  pull_request:
-    branches: [master]
 
 env:
   CARGO_TERM_COLOR: always
@@ -36,18 +34,6 @@ jobs:
         run: |
           wget -c https://github.com/WebAssembly/binaryen/releases/download/version_110/binaryen-version_110-x86_64-linux.tar.gz -O - | tar -xz -C .
           sudo cp binaryen-version_110/bin/wasm-opt /usr/bin/
-
-      - name: Check fmt
-        if: github.event_name == 'pull_request'
-        run: make fmt
-
-      - name: Run linter
-        if: github.event_name == 'pull_request'
-        run: make lint
-
-      - name: Run tests
-        if: github.event_name == 'pull_request'
-        run: make test-contracts
 
       - name: Build
         run: make contracts
@@ -88,7 +74,6 @@ jobs:
           path: ./artifact/*
 
   upload:
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     needs:
       - build-contracts
