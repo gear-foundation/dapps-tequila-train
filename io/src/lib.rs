@@ -68,6 +68,7 @@ pub enum Face {
     Twelve,
 }
 
+/// Type to identify the tile
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Tile {
     first: Face,
@@ -110,28 +111,24 @@ pub struct Players {
     others: Vec<ActorId>,
 }
 
-// Type to identify the tile
 #[derive(Debug, Clone, Copy, Ord, PartialOrd, Eq, PartialEq)]
-struct TileId(Face, Face);
+/// A number to identify one of trace
+struct Trace(u32);
 
-#[derive(Debug, Clone, Copy, Ord, PartialOrd, Eq, PartialEq)]
-// A number to identify one of trace
-struct TraceId(u32);
-
-// Struct of payload to send move
-#[derive(Debug, Clone, Copy, Ord, PartialOrd, Eq, PartialEq)]
+/// Struct of payload to send move
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum GameMove {
-    // Try to set a tile to a gameboard
+    /// Try to set a tile to a gameboard
     SetTile {
-        tile_id: TileId,
-        trace_id: TraceId,
+        tile_id: Tile,
+        trace_id: Trace,
         getting_train_back: bool,
     },
-    // Try to set a train to your trace
+    /// Try to set a train to your trace
     SetTrain {
-        trace_id: TraceId,
+        trace_id: Trace,
     },
-    // Skip the move and get new tile
+    /// Skip the move and get new tile
     Skip,
     // Surrender and stop the game
     Surrender,
@@ -140,17 +137,17 @@ pub enum GameMove {
 // Status to identify was the move correct or not
 #[derive(Debug, Clone, Copy, Ord, PartialOrd, Eq, PartialEq)]
 enum ReplyStatus {
-    // Move correct
+    /// Move correct
     Success,
-    // User have no tile that is tryed to be set
+    /// User have no tile that is tryed to be set
     ErrorTileNotFound,
-    // Invalid move turn
+    /// Invalid move turn
     ErrorNotYourTurnToMove,
-    // Cannot set tile on given trace
+    /// Cannot set tile on given trace
     ErrorTileInvalid,
-    // Cannot get back train
+    /// Cannot get back train
     ErrorTrainNotSet,
-    // Cannot set train 'cause it's already set for current user
+    /// Cannot set train 'cause it's already set for current user
     ErrorTrainAlreadySet,
 }
 
