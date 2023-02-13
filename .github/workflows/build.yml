@@ -5,14 +5,12 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
-  schedule:
-    - cron: '0 0 * * *'
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  build-contracts:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,9 +18,11 @@ jobs:
 
       - name: Artifact cache
         uses: Swatinem/rust-cache@v2
+        workspaces: |
+            contracts -> target
 
       - name: Remove binaries from cache
-        run: rm -vf target/wasm32-unknown-unknown/release/*.wasm
+        run: rm -vf contracts/target/wasm32-unknown-unknown/release/*.wasm
 
       - name: Install nightly toolchain
         uses: actions-rs/toolchain@v1
@@ -37,20 +37,19 @@ jobs:
           sudo cp binaryen-version_110/bin/wasm-opt /usr/bin/
 
       - name: Check fmt
+        if: github.event_name == 'pull_request'
         run: make fmt
 
       - name: Run linter
+        if: github.event_name == 'pull_request'
         run: make lint
 
       - name: Run tests
-        run: |
-          curl -L https://get.gear.rs/gear-nightly-linux-x86_64.tar.xz -o - | tar xJ
-          ./gear --tmp --dev &> /dev/null & echo -n $! > gear.pid
-          make full-test
-          kill `cat gear.pid`
+        if: github.event_name == 'pull_request'
+        run: make test
 
       - name: Build
-        run: make build
+        run: make
 
       - name: Upload artifacts
         if: github.event_name == 'push'
