@@ -15,17 +15,19 @@ jobs:
         with:
           node-version: 16
 
-      - name: Install dependencies
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
-          dir: frontend
+      - name: Install yarn
+        run: sudo npm i yarn -g
 
       - name: Build
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: build
-          dir: frontend
+        run: |
+          make init-frontend
+          make frontend
+
+      # - name: Build
+      #   uses: borales/actions-yarn@v4
+      #   with:
+      #     cmd: build
+      #     dir: frontend
 
       # - name: Install dependencies
       #   run: cd frontend && npm install
@@ -33,8 +35,8 @@ jobs:
       # - name: Build
       #   run: cd frontend && npm run build
 
-      - name: Prepare env
-        run: cp frontend/.env.example.local frontend/.env
+      # - name: Prepare env
+      #   run: cp frontend/.env.example.local frontend/.env
 
       - name: Deploy
         uses: dawidd6/action-ansible-playbook@v2
