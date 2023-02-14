@@ -116,7 +116,11 @@ pub struct Players {
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Copy, Debug)]
 pub enum Command {
     Skip,
-    Place { tile_id: u32, track_id: u32, remove_train: bool, },
+    Place {
+        tile_id: u32,
+        track_id: u32,
+        remove_train: bool,
+    },
 }
 
 #[derive(Clone, Debug, Default)]
@@ -153,10 +157,10 @@ impl GameState {
     }
 
     fn post_actions(&mut self) {
-        let i = self.current_player;
-        self.current_player = match i + 1 >= self.players.len() as u32 {
+        let i = self.current_player as usize;
+        self.current_player = match i + 1 >= self.players.len() {
             true => 0,
-            false => (i + 1) as u32
+            false => (i + 1) as u32,
         };
 
         todo!()
@@ -176,7 +180,12 @@ impl GameState {
         }
 
         // check tile can be put on the track
-        if track_id != self.current_player && self.tracks.get(track_id as usize).map_or(false, |data| data.has_train) {
+        if track_id != self.current_player
+            && self
+                .tracks
+                .get(track_id as usize)
+                .map_or(false, |data| data.has_train)
+        {
             unreachable!("invalid track");
         }
 
