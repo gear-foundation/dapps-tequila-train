@@ -7,7 +7,7 @@ env:
   CI: false
 
 jobs:
-  deploy-fronend:
+  deploy-frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
