@@ -70,25 +70,28 @@ pub enum Face {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Tile {
-    first: Face,
-    second: Face,
+    left: Face,
+    right: Face,
 }
 
 impl Tile {
-    pub fn new(first: Face, second: Face) -> Self {
-        Self { first, second }
+    pub fn new(left: Face, right: Face) -> Self {
+        Self { left, right }
+    }
+
+    pub fn swap(self) -> Self {
+        Self {
+            left: self.right,
+            right: self.left,
+        }
     }
 
     pub fn is_double(&self) -> bool {
-        self.first == self.second
+        self.left == self.right
     }
 
-    pub fn can_be_stacked(&self, face: Face) -> Option<Face> {
-        if self.first == face {
-            return Some(self.second);
-        }
-
-        (self.second == face).then_some(self.first)
+    pub fn can_adjoin(&self, other: &Tile) -> bool {
+        self.right == other.left
     }
 }
 
@@ -116,36 +119,16 @@ pub enum Command {
     Place { tile_id: u32, track_id: u32 },
 }
 
+#[derive(Clone, Debug, Default)]
 pub struct TrackData {
     tiles: Vec<Tile>,
-    last_face: Face,
-}
-
-impl TrackData {
-    pub fn new(last_face: Face) -> Self {
-        Self {
-            tiles: vec![],
-            last_face,
-        }
-    }
-
-    pub fn put_tile(&mut self, tile: Tile) -> bool {
-        match tile.can_be_stacked(self.last_face) {
-            None => false,
-            Some(new_last_face) => {
-                self.last_face = new_last_face;
-                self.tiles.push(tile);
-
-                true
-            }
-        }
-    }
+    has_train: bool,
 }
 
 pub struct GameState {
     players: Vec<ActorId>,
-    tracks: Vec<(TrackData, bool)>,
-    _start_tile: u32,
+    tracks: Vec<TrackData>,
+    start_tile: u32,
     current_player: u32,
     tile_to_player: BTreeMap<u32, u32>,
     tiles: Vec<Tile>,
@@ -163,7 +146,7 @@ impl GameState {
             unreachable!("it is not your turn");
         }
 
-        self.tracks[i].1 = true;
+        self.tracks[i].has_train = true;
 
         self.post_actions();
     }
@@ -192,23 +175,44 @@ impl GameState {
         }
 
         // check tile can be put on the track
-        if track_id != self.current_player && self.tracks.get(track_id as usize).map_or(false, |(_data, has_train)| *has_train) {
+        if track_id != self.current_player && self.tracks.get(track_id as usize).map_or(false, |data| data.has_train) {
             unreachable!("invalid track");
         }
 
         let tile = self.tiles[tile_id as usize];
-        if !self.tracks[i].0.put_tile(tile) {
+        if !self.put_tile(tile, track_id as usize) {
             unreachable!("invalid tile");
         }
 
         // remove train
         if track_id == self.current_player {
-            self.tracks[i].1 = false;
+            self.tracks[i].has_train = false;
         }
 
         // remove tile from player's set
         self.tile_to_player.remove(&tile_id);
 
         self.post_actions();
+    }
+
+    fn put_tile(&mut self, tile: Tile, track_id: usize) -> bool {
+        let track = &mut self.tracks[track_id];
+        let last_tile = match track.tiles.last() {
+            None => &self.tiles[self.start_tile as usize],
+            Some(tile) => tile,
+        };
+
+        if last_tile.can_adjoin(&tile) {
+            track.tiles.push(tile);
+            return true;
+        }
+
+        let tile = tile.swap();
+        if last_tile.can_adjoin(&tile) {
+            track.tiles.push(tile);
+            return true;
+        }
+
+        false
     }
 }
