@@ -99,13 +99,13 @@ pub enum Command {
     },
 }
 
-#[derive(Debug, TypeInfo, Encode, Decode)]
+#[derive(Debug, TypeInfo, Encode, Decode, Clone)]
 pub struct TrackData {
     tiles: Vec<Tile>,
     has_train: bool,
 }
 
-#[derive(Debug, TypeInfo, Encode, Decode)]
+#[derive(Debug, TypeInfo, Encode, Decode, Clone)]
 pub struct GameState {
     players: Vec<ActorId>,
     tracks: Vec<TrackData>,

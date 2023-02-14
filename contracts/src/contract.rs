@@ -2,9 +2,8 @@ use gstd::{
     errors::{ContractError, Result as GstdResult},
     msg,
     prelude::*,
-    util, ActorId, MessageId,
+    MessageId,
 };
-use hashbrown::HashMap;
 use tequila_io::*;
 
 static mut GAME_STATE: Option<GameState> = None;
@@ -56,8 +55,13 @@ fn process_handle() -> Result<(), ContractError> {
 
 #[no_mangle]
 extern "C" fn state() {
-    let state = unsafe { GAME_STATE.as_ref().expect("Game state is not initialized") };
-    reply(state.clone()).expect("Failed to encode or reply with the game state");
+    reply(unsafe {
+        GAME_STATE
+            .as_ref()
+            .expect("Game state is not initialized")
+            .clone()
+    })
+    .expect("Failed to encode or reply with the game state");
 }
 
 #[no_mangle]
