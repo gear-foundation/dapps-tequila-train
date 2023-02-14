@@ -45,8 +45,8 @@ pub enum Face {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, TypeInfo, Encode, Decode)]
 pub struct Tile {
-    left: Face,
-    right: Face,
+    pub left: Face,
+    pub right: Face,
 }
 
 impl Tile {
@@ -98,19 +98,19 @@ pub enum Command {
 
 #[derive(Debug, TypeInfo, Encode, Decode, Clone, Default)]
 pub struct TrackData {
-    tiles: Vec<Tile>,
-    has_train: bool,
+    pub tiles: Vec<Tile>,
+    pub has_train: bool,
 }
 
 #[derive(Debug, TypeInfo, Encode, Decode, Clone)]
 pub struct GameState {
-    players: Vec<ActorId>,
-    tracks: Vec<TrackData>,
-    shots: Vec<u32>,
-    start_tile: u32,
-    current_player: u32,
+    pub players: Vec<ActorId>,
+    pub tracks: Vec<TrackData>,
+    pub shots: Vec<u32>,
+    pub start_tile: u32,
+    pub current_player: u32,
     tile_to_player: BTreeMap<u32, u32>,
-    tiles: Vec<Tile>,
+    pub tiles: Vec<Tile>,
     _remaining_tiles: BTreeSet<u32>,
     state: State,
 }
