@@ -49,8 +49,8 @@ fn process_handle() -> Result<(), ContractError> {
     let player = msg::source();
     match command {
         Command::Skip => game_state.skip_turn(player),
-        Command::Place { tile_id, track_id } => {
-            game_state.make_turn(player, tile_id, track_id);
+        Command::Place { tile_id, track_id, remove_train } => {
+            game_state.make_turn(player, tile_id, track_id, remove_train);
         }
     }
 

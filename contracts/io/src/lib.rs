@@ -116,7 +116,7 @@ pub struct Players {
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Copy, Debug)]
 pub enum Command {
     Skip,
-    Place { tile_id: u32, track_id: u32 },
+    Place { tile_id: u32, track_id: u32, remove_train: bool, },
 }
 
 #[derive(Clone, Debug, Default)]
@@ -162,7 +162,7 @@ impl GameState {
         todo!()
     }
 
-    pub fn make_turn(&mut self, player: ActorId, tile_id: u32, track_id: u32) {
+    pub fn make_turn(&mut self, player: ActorId, tile_id: u32, track_id: u32, remove_train: bool) {
         let i = self.current_player as usize;
         if self.players[i] != player {
             unreachable!("it is not your turn");
@@ -185,8 +185,8 @@ impl GameState {
             unreachable!("invalid tile");
         }
 
-        // remove train
-        if track_id == self.current_player {
+        // remove train if all criterea met
+        if remove_train && track_id == self.current_player {
             self.tracks[i].has_train = false;
             self.shots[i] += 1;
         }
