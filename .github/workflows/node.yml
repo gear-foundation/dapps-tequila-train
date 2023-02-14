@@ -1,4 +1,4 @@
-name: Build Node
+name: Build Gear Node
 
 on:
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
           target: wasm32-unknown-unknown
           profile: minimal
 
-      - name: "Install: Build deps"
+      - name: Install deps
         run: |
           sudo apt update -y
           sudo apt install -y git clang curl libssl-dev llvm libudev-dev cmake protobuf-compiler wget bzip2
@@ -31,7 +31,7 @@ jobs:
       - name: Cache
         uses: Swatinem/rust-cache@v2
 
-      - name: Build production binaries
+      - name: Build
         run: cargo build --release
 
       - name: Prepare artifacts
