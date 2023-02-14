@@ -21,8 +21,8 @@ fmt-check:
 
 frontend:
 	@echo 🚂 Building frontend...
-	@cd frontend && yarn build
 	@cp frontend/.env.example.local frontend/.env
+	@cd frontend && yarn build
 
 full-test:
 	@echo 🚂 Running all tests...
