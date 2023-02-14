@@ -144,14 +144,12 @@ pub struct GameState {
 /// - 6 players: 6 tiles
 /// - 7 players: 5 tiles
 /// - 8 players: 4 tiles
-fn tales_per_person(players_amount: usize) -> usize {
-    debug_assert!((2..=8).contains(&players_amount));
-
-    if (2..=4).contains(&players_amount) {
-        return 8;
+fn tiles_per_person(players_amount: usize) -> usize {
+    match players_amount {
+        2..=4 => 8,
+        5..=8 => 12 - players_amount,
+        _ => unreachable!("Invalid player amount reached")
     }
-
-    12 - players_amount
 }
 
 fn get_random_from_set<T: Copy>(set: &BTreeSet<T>) -> T {
@@ -171,17 +169,17 @@ impl GameState {
         let start_tile: u32 = 0; // TODO: identify
         let current_player: u32 = 0; // TODO: identify
         let mut tile_to_player: BTreeMap<u32, u32> = Default::default();
-        let shots = vec![0u32, players_amount as u32];
+        let shots = vec![0u32; players_amount];
 
         // Build all possible tiles
         let tiles = build_tile_collection();
         let mut remaining_tiles: BTreeSet<u32> = Default::default();
-        for (index, _) in tiles.iter().enumerate() {
+        for index in 0..tiles.len() {
             remaining_tiles.insert(index as u32);
         }
 
         // Spread tiles to players
-        let tiles_per_person = tales_per_person(players_amount);
+        let tiles_per_person = tiles_per_person(players_amount);
         for (player_index, _) in initial_data.players.iter().enumerate() {
             for _ in 1..=tiles_per_person {
                 let tile_id = get_random_from_set(&remaining_tiles);
@@ -193,7 +191,7 @@ impl GameState {
 
         Some(GameState {
             players: initial_data.players.clone(),
-            tracks: vec![],
+            tracks: vec![Default::default(); players_amount],
             shots,
             start_tile,
             current_player,
