@@ -45,7 +45,7 @@ export const PlayerTrackSection = ({ index, train, isUserTrain, active, tiles }:
       <div className="relative flex items-center gap-0.5">
         {tiles && tiles.map((tile, i) => <DominoItem row tile={tile} key={i} />)}
 
-        {(active || train) && <DominoZone light={active && !getBgColors(index).isLight} />}
+        {active && <DominoZone light={active && !getBgColors(index).isLight} />}
       </div>
     </div>
   );

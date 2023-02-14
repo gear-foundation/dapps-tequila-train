@@ -3,6 +3,7 @@ import { PlayerCardSection } from '../player-card-section';
 import { PlayerConsSection } from '../player-cons-section';
 import { useApp, useGame } from 'app/context';
 import { useEffect } from 'react';
+import * as wasi from 'wasi';
 
 export const GameSection = () => {
   const { gameWasm: state, players } = useGame();
@@ -20,7 +21,7 @@ export const GameSection = () => {
         </li>
         {state?.tracks.map((p, i) => (
           <li key={i}>
-            <PlayerTrackSection index={i} isUserTrain={p.hasTrain} />
+            <PlayerTrackSection index={i} isUserTrain={p.hasTrain} active={state?.currentPlayer - 1 === i} />
           </li>
         ))}
       </ul>
