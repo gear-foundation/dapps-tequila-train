@@ -128,6 +128,7 @@ pub struct TrackData {
 pub struct GameState {
     players: Vec<ActorId>,
     tracks: Vec<TrackData>,
+    shots: Vec<u32>,
     start_tile: u32,
     current_player: u32,
     tile_to_player: BTreeMap<u32, u32>,
@@ -187,6 +188,7 @@ impl GameState {
         // remove train
         if track_id == self.current_player {
             self.tracks[i].has_train = false;
+            self.shots[i] += 1;
         }
 
         // remove tile from player's set
