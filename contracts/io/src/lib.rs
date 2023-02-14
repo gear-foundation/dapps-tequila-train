@@ -14,9 +14,6 @@ impl Metadata for ContractMetadata {
     type State = GameState;
 }
 
-#[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug, Default)]
-pub struct State(pub Vec<(ActorId, u128)>);
-
 #[derive(
     Debug,
     Clone,
@@ -115,7 +112,14 @@ pub struct GameState {
     tile_to_player: BTreeMap<u32, u32>,
     tiles: Vec<Tile>,
     _remaining_tiles: BTreeSet<u32>,
-    winner: Option<ActorId>,
+    state: State,
+}
+
+#[derive(Clone, Copy, Debug, Encode, Decode, TypeInfo)]
+pub enum State {
+    Playing,
+    Stalled,
+    Winner(ActorId),
 }
 
 /// - 2..4 players: 8 tiles
@@ -177,12 +181,12 @@ impl GameState {
             tile_to_player,
             tiles,
             _remaining_tiles: remaining_tiles,
-            winner: None,
+            state: State::Playing,
         })
     }
 
-    pub fn winner(&self) -> Option<ActorId> {
-        self.winner
+    pub fn state(&self) -> State {
+        self.state
     }
 
     pub fn skip_turn(&mut self, player: ActorId) {
@@ -204,7 +208,7 @@ impl GameState {
             .filter(|&player| *player == self.current_player)
             .count();
         if remaining_tiles == 0 {
-            self.winner = Some(self.players[self.current_player as usize]);
+            self.state = State::Winner(self.players[self.current_player as usize]);
             return;
         }
 
@@ -241,7 +245,7 @@ impl GameState {
 
         if check_result.is_some() {
             // no one can make turn. Game is over
-            todo!()
+            self.state = State::Stalled;
         }
     }
 
