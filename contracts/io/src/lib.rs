@@ -86,9 +86,7 @@ pub fn build_tile_collection() -> Vec<Tile> {
 
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug)]
 pub struct Players {
-    _first: ActorId,
-    _second: ActorId,
-    _others: Vec<ActorId>,
+    players: Vec<ActorId>,
 }
 
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Copy, Debug)]
@@ -116,6 +114,7 @@ pub struct GameState {
     current_player: u32,
     tile_to_player: BTreeMap<u32, u32>,
     tiles: Vec<Tile>,
+    _remaining_tiles: BTreeSet<u32>,
     winner: Option<ActorId>,
 }
 
