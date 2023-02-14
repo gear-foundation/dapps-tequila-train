@@ -99,7 +99,7 @@ pub enum Command {
     },
 }
 
-#[derive(Debug, TypeInfo, Encode, Decode, Clone)]
+#[derive(Debug, TypeInfo, Encode, Decode, Clone, Default)]
 pub struct TrackData {
     tiles: Vec<Tile>,
     has_train: bool,
@@ -127,7 +127,7 @@ fn tiles_per_person(players_amount: usize) -> usize {
     match players_amount {
         2..=4 => 8,
         5..=8 => 12 - players_amount,
-        _ => unreachable!("Invalid player amount reached")
+        _ => unreachable!("Invalid player amount reached"),
     }
 }
 
