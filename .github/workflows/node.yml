@@ -9,7 +9,31 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: amazonlinux:latest
     steps:
+      - name: Install dependencies
+        run: |
+          yum update -y && yum install -y amazon-linux-extras clang gcc git gzip make tar unzip wget
+          clang --version
+          gcc --version
+          c++ --version
+          git --version
+
+      - name: Install CMake
+        run: |
+          wget https://cmake.org/files/v3.24/cmake-3.24.0-linux-x86_64.sh
+          chmod +x cmake-3.24.0-linux-x86_64.sh
+          ./cmake-3.24.0-linux-x86_64.sh --skip-license --prefix=/usr/local
+          rm cmake-3.24.0-linux-x86_64.sh
+          cmake --version
+
+      - name: Install protoc
+        run: |
+          wget https://github.com/protocolbuffers/protobuf/releases/download/v3.20.2/protoc-3.20.2-linux-x86_64.zip
+          unzip protoc-3.20.2-linux-x86_64.zip -d /usr/local
+          rm protoc-3.20.2-linux-x86_64.zip
+          protoc --version
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -31,8 +55,11 @@ jobs:
       - name: Cache
         uses: Swatinem/rust-cache@v2
 
+      - name: Fix for `git rev-parse`
+        run: git config --global --add safe.directory `pwd`
+
       - name: Build
-        run: cargo build --release
+        run: cargo build -p gear-cli --release
 
       - name: Prepare artifacts
         run: |
