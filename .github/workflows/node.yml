@@ -47,11 +47,6 @@ jobs:
           target: wasm32-unknown-unknown
           profile: minimal
 
-      - name: Install deps
-        run: |
-          sudo apt update -y
-          sudo apt install -y git clang curl libssl-dev llvm libudev-dev cmake protobuf-compiler wget bzip2
-
       - name: Cache
         uses: Swatinem/rust-cache@v2
 
