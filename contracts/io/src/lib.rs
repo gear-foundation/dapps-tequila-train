@@ -223,15 +223,14 @@ impl GameState {
                 .collect::<Vec<_>>();
 
             let player_index = next_player as usize;
-            let available_tracks = [player_index]
-                .iter()
-                .copied()
-                .chain(self
-                    .tracks
+            let available_tracks =
+                [player_index]
                     .iter()
-                    .enumerate()
-                    .filter_map(|(i, track)| (i != player_index && track.has_train).then_some(i)))
-                .collect::<Vec<_>>();
+                    .copied()
+                    .chain(self.tracks.iter().enumerate().filter_map(|(i, track)| {
+                        (i != player_index && track.has_train).then_some(i)
+                    }))
+                    .collect::<Vec<_>>();
             if self.check_tiles(&remaining_tiles, &available_tracks) {
                 self.current_player = next_player;
                 return None;
@@ -266,9 +265,8 @@ impl GameState {
         for tile_index in tiles {
             let tile = self.tiles[*tile_index];
             for track_id in tracks {
-                match self.can_put_tile(tile, *track_id) {
-                    Some(_) => return true,
-                    None => (),
+                if self.can_put_tile(tile, *track_id).is_some() {
+                    return true;
                 }
             }
         }
