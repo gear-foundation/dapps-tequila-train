@@ -109,13 +109,14 @@ pub fn build_tile_collection() -> Vec<Tile> {
         .collect()
 }
 
-
+#[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug)]
 pub struct Players {
     first: ActorId,
     second: ActorId,
     others: Vec<ActorId>,
 }
 
+#[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Copy, Debug)]
 pub enum Command {
     Skip,
     Place {
