@@ -197,12 +197,63 @@ impl GameState {
     }
 
     fn post_actions(&mut self) {
-        let i = self.current_player as usize;
-        self.current_player = match i + 1 >= self.players.len() {
-            true => 0,
-            false => (i + 1) as u32,
-        };
+        // check if the current player wins
+        let remaining_tiles = self
+            .tile_to_player
+            .values()
+            .filter(|&player| *player == self.current_player)
+            .count();
+        if remaining_tiles == 0 {
+            self.winner = Some(self.players[self.current_player as usize]);
+            return;
+        }
 
+        // check if any next player is able to make a turn
+        let players_to_check = self.players.len();
+        let check_result = (0..players_to_check).try_fold(self.current_player, |player, _| {
+            let next_player = self.next_player(player);
+            let remaining_tiles = self
+                .tile_to_player
+                .iter()
+                .filter_map(|(&tile, &player)| (player == next_player).then_some(tile as usize))
+                .collect::<Vec<_>>();
+            let available_tracks = self
+                .tracks
+                .iter()
+                .enumerate()
+                .filter_map(|(i, track)| (i as u32 == next_player || track.has_train).then_some(i))
+                .collect::<Vec<_>>();
+            if self.check_tiles(&remaining_tiles, &available_tracks) {
+                self.current_player = next_player;
+                return None;
+            }
+
+            let i = next_player as usize;
+            if self.tracks[i].has_train {
+                // give the player randomly chosen tile
+                todo!()
+            } else {
+                self.tracks[i].has_train = true;
+            }
+
+            Some(next_player)
+        });
+
+        if check_result.is_some() {
+            // no one can make turn. Game is over
+            todo!()
+        }
+    }
+
+    fn next_player(&self, current_player: u32) -> u32 {
+        let i = current_player as usize + 1;
+        match i < self.players.len() {
+            true => i as u32,
+            false => 0,
+        }
+    }
+
+    fn check_tiles(&self, _tiles: &[usize], _tracks: &[usize]) -> bool {
         todo!()
     }
 
