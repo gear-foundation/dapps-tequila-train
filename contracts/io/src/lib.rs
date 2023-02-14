@@ -152,7 +152,7 @@ fn get_random_from_set<T: Copy>(set: &BTreeSet<T>) -> T {
 /// Check if 'current_tile' tile is double and bigger than 'stored_tile'
 fn is_double_tile_bigger(
     current_tile_id: u32,
-    stored_tile_id: Option<u32>,
+    stored_tile_id: Option<(u32, u32)>,
     tiles: &[Tile],
 ) -> bool {
     let current_tile = tiles[current_tile_id as usize];
@@ -160,7 +160,7 @@ fn is_double_tile_bigger(
         return false;
     }
 
-    if let Some(stored_id) = stored_tile_id {
+    if let Some((stored_id, _)) = stored_tile_id {
         let stored_tile = tiles[stored_id as usize];
         if stored_tile.left >= current_tile.left {
             return false;
@@ -180,9 +180,8 @@ fn give_tiles_until_double(
     tiles: &[Tile],
     tile_to_player: &mut BTreeMap<u32, u32>,
     players: &Vec<ActorId>,
-) -> (Option<u32>, Option<u32>) {
-    let mut best_double = None;
-    let mut starting_person = None;
+) -> Option<(u32, u32)> {
+    let mut starting_pair = None;
 
     for player_index in 0..players.len() {
         // giving a new tile to player
@@ -191,13 +190,12 @@ fn give_tiles_until_double(
         tile_to_player.insert(tile_id, player_index as u32);
 
         // check if it matchs or not
-        if is_double_tile_bigger(tile_id, best_double, tiles) {
-            best_double = Some(tile_id);
-            starting_person = Some(player_index as u32);
+        if is_double_tile_bigger(tile_id, starting_pair, tiles) {
+            starting_pair = Some((tile_id, player_index as u32));
         }
     }
 
-    (best_double, starting_person)
+    starting_pair
 }
 
 impl GameState {
@@ -230,19 +228,17 @@ impl GameState {
         }
 
         // Recognize starting person and tile
-        let mut starting_tile = None;
-        let mut starting_person = None;
+        let mut starting_pair: Option<(u32, u32)> = None;
 
         for (tile_index, person_index) in &tile_to_player {
-            if is_double_tile_bigger(*tile_index, starting_tile, &tiles) {
-                starting_tile = Some(*tile_index);
-                starting_person = Some(*person_index)
+            if is_double_tile_bigger(*tile_index, starting_pair, &tiles) {
+                starting_pair = Some((*tile_index, *person_index));
             }
         }
 
         // Add tiles if no matching starting tile exists
-        while starting_tile.is_none() {
-            (starting_tile, starting_person) = give_tiles_until_double(
+        while starting_pair.is_none() {
+            starting_pair = give_tiles_until_double(
                 &mut remaining_tiles,
                 &tiles,
                 &mut tile_to_player,
@@ -254,8 +250,8 @@ impl GameState {
             players: initial_data.players.clone(),
             tracks: vec![Default::default(); players_amount],
             shots: vec![0u32; players_amount],
-            start_tile: starting_tile.unwrap(),
-            current_player: starting_person.unwrap() + 1,
+            start_tile: starting_pair.unwrap().0,
+            current_player: starting_pair.unwrap().1 + 1,
             tile_to_player,
             tiles,
             _remaining_tiles: remaining_tiles,
