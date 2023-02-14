@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: gear-tech/gear
-          ref: 983e979
+          ref: '983e979928b0ae460794c09423d21c8e4bf6c54b'
 
       - name: Install toolchain
         uses: actions-rs/toolchain@v1
