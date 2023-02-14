@@ -76,10 +76,7 @@ pub struct Tile {
 
 impl Tile {
     pub fn new(first: Face, second: Face) -> Self {
-        Self {
-            first,
-            second,
-        }
+        Self { first, second }
     }
 
     pub fn is_double(&self) -> bool {
@@ -98,31 +95,25 @@ impl Tile {
 pub fn build_tile_collection() -> Vec<Tile> {
     enum_iterator::all::<Face>()
         .enumerate()
-        .map(|(i, face_first)| {
+        .flat_map(|(i, face_first)| {
             enum_iterator::all::<Face>()
                 .skip(i)
-                .map(move |face_second| {
-                    Tile::new(face_first, face_second)
-                })
+                .map(move |face_second| Tile::new(face_first, face_second))
         })
-        .flatten()
         .collect()
 }
 
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug)]
 pub struct Players {
-    first: ActorId,
-    second: ActorId,
-    others: Vec<ActorId>,
+    _first: ActorId,
+    _second: ActorId,
+    _others: Vec<ActorId>,
 }
 
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Copy, Debug)]
 pub enum Command {
     Skip,
-    Place {
-        tile_id: u32,
-        track_id: u32,
-    }
+    Place { tile_id: u32, track_id: u32 },
 }
 
 pub struct TrackData {
@@ -154,7 +145,7 @@ impl TrackData {
 pub struct GameState {
     players: Vec<ActorId>,
     tracks: Vec<(TrackData, bool)>,
-    start_tile: u32,
+    _start_tile: u32,
     current_player: u32,
     tile_to_player: BTreeMap<u32, u32>,
     tiles: Vec<Tile>,

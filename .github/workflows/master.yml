@@ -3,16 +3,12 @@ name: Build
 on:
   push:
     branches: [master]
-  pull_request:
-    branches: [master]
-  schedule:
-    - cron: '0 0 * * *'
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  build-contracts:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,9 +16,12 @@ jobs:
 
       - name: Artifact cache
         uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            contracts -> target
 
       - name: Remove binaries from cache
-        run: rm -vf target/wasm32-unknown-unknown/release/*.wasm
+        run: rm -vf contracts/target/wasm32-unknown-unknown/release/*.wasm
 
       - name: Install nightly toolchain
         uses: actions-rs/toolchain@v1
@@ -36,32 +35,49 @@ jobs:
           wget -c https://github.com/WebAssembly/binaryen/releases/download/version_110/binaryen-version_110-x86_64-linux.tar.gz -O - | tar -xz -C .
           sudo cp binaryen-version_110/bin/wasm-opt /usr/bin/
 
-      - name: Check fmt
-        run: make fmt
-
-      - name: Run linter
-        run: make lint
-
-      - name: Run tests
-        run: |
-          curl -L https://get.gear.rs/gear-nightly-linux-x86_64.tar.xz -o - | tar xJ
-          ./gear --tmp --dev &> /dev/null & echo -n $! > gear.pid
-          make full-test
-          kill `cat gear.pid`
-
       - name: Build
-        run: make build
+        run: make contracts
 
       - name: Upload artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v3
         with:
-          path: ./target/wasm32-unknown-unknown/release/*.wasm
+          path: ./contracts/target/wasm32-unknown-unknown/release/*.wasm
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: cd frontend && npm install
+
+      - name: Build
+        run: cd frontend && npm run build
+
+      - name: Prepare artifacts
+        run: |
+          mkdir -p artifact
+          cd frontend
+          XZ_OPT=-9 tar -cvJf ../artifact/frontend.tar.xz index.html
+
+      - name: Upload artifacts
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./artifact/*
 
   upload:
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    needs: build
+    needs:
+      - build-contracts
+      - build-frontend
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
@@ -80,6 +96,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: true
           tag_name: build
-          draft: false
-          fail_on_unmatched_files: true
-          files: artifact/*.wasm
+          files: artifact/*
