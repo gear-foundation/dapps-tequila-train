@@ -122,6 +122,7 @@ dependencies = [
 name = "app-io"
 version = "0.1.0"
 dependencies = [
+ "enum-iterator",
  "gmeta 0.1.0 (git+https://github.com/gear-tech/gear.git?branch=stable)",
  "gstd",
  "parity-scale-codec",

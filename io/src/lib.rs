@@ -155,22 +155,34 @@ pub struct GameState {
     tracks: Vec<(TrackData, bool)>,
     start_tile: u32,
     current_player: u32,
+    tile_to_player: BTreeMap<u32, u32>,
+    tiles: Vec<Tile>,
+    winner: Option<ActorId>,
 }
 
 impl GameState {
+    pub fn winner(&self) -> Option<ActorId> {
+        self.winner
+    }
+
     pub fn skip_turn(&mut self, player: ActorId) {
         let i = self.current_player as usize;
         if self.players[i] != player {
             unreachable!("it is not your turn");
         }
 
-        self.current_player = i + 1;
-        tracks[i].1 = true;
+        self.tracks[i].1 = true;
 
         self.post_actions();
     }
 
     fn post_actions(&mut self) {
+        let i = self.current_player;
+        self.current_player = match i + 1 >= self.players.len() as u32 {
+            true => 0,
+            false => (i + 1) as u32
+        };
+
         todo!()
     }
 
@@ -181,8 +193,29 @@ impl GameState {
         }
 
         // check player owns the tile
+        match self.tile_to_player.get(&tile_id) {
+            None => unreachable!("invalid tile id"),
+            Some(user_id) if *user_id != self.current_player => unreachable!("wrong tile owner"),
+            _ => (),
+        }
 
         // check tile can be put on the track
+        if track_id != self.current_player && self.tracks.get(track_id as usize).map_or(false, |(_data, has_train)| *has_train) {
+            unreachable!("invalid track");
+        }
+
+        let tile = self.tiles[tile_id as usize];
+        if !self.tracks[i].0.put_tile(tile) {
+            unreachable!("invalid tile");
+        }
+
+        // remove train
+        if track_id == self.current_player {
+            self.tracks[i].1 = false;
+        }
+
+        // remove tile from player's set
+        self.tile_to_player.remove(&tile_id);
 
         self.post_actions();
     }
