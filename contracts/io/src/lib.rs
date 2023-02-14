@@ -101,6 +101,7 @@ pub enum Command {
     },
 }
 
+#[derive(Debug, TypeInfo, Encode, Decode)]
 pub struct TrackData {
     tiles: Vec<Tile>,
     has_train: bool,
@@ -162,6 +163,7 @@ impl GameState {
             && self
                 .tracks
                 .get(track_id as usize)
+                .map_or(false, |data| data.has_train)
         {
             unreachable!("invalid track");
         }
