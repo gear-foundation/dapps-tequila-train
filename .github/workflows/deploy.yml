@@ -16,10 +16,22 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        run: cd frontend && npm install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+          dir: frontend
 
       - name: Build
-        run: cd frontend && npm run build
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+          dir: frontend
+
+      # - name: Install dependencies
+      #   run: cd frontend && npm install
+
+      # - name: Build
+      #   run: cd frontend && npm run build
 
       - name: Prepare env
         run: cp frontend/.env.example.local frontend/.env
