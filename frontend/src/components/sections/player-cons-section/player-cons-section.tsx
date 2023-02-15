@@ -3,11 +3,19 @@ import { useGameMessage } from 'app/hooks/use-game';
 import { PlayerDomino } from '../../common/player-domino';
 import { DominoTileType } from 'app/types/game';
 import { getTileId } from 'app/utils';
+import { useEffect } from 'react';
 
 export const PlayerConsSection = () => {
   const { setIsPending, isPending, setOpenEmptyPopup } = useApp();
   const { game, gameWasm: wasm, setSelectedDomino, selectedDomino, setPlayerChoice, playerChoice } = useGame();
   const handleMessage = useGameMessage();
+
+  useEffect(() => {
+    return () => {
+      setPlayerChoice(undefined);
+      setSelectedDomino(undefined);
+    };
+  }, []);
 
   const onSuccess = () => setIsPending(false);
   const onError = () => setIsPending(false);
@@ -35,10 +43,10 @@ export const PlayerConsSection = () => {
   };
 
   const onTurn = () => {
-    if (playerChoice?.track_id && playerChoice.tile_id) {
+    if (playerChoice?.track_id !== undefined && playerChoice.tile_id !== undefined) {
       const { tile_id, track_id, remove_train } = playerChoice;
 
-      if (track_id && tile_id) {
+      if (track_id >= 0 && tile_id >= 0) {
         setIsPending((prev) => !prev);
         handleMessage({ Place: { tile_id, track_id, remove_train } }, { onSuccess, onError });
       }

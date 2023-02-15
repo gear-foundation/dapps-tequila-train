@@ -12,7 +12,7 @@ export const GameSection = () => {
     <div className="container-xl flex flex-col grow">
       <ul className="space-y-px">
         <li>
-          <PlayerTrackSection index={-1} train tiles={state ? [state?.startTile] : undefined} />
+          <PlayerTrackSection index={-1} train isUserTrain={false} tiles={state ? [state?.startTile] : undefined} />
         </li>
         {state?.tracks.map((p, i) => (
           <li key={i}>
