@@ -99,3 +99,74 @@ fn test_give_tiles_until_double() {
     assert_eq!(start_tile.left, Face::Two);
     assert_eq!(matching_tile_id.unwrap().1, 1);
 }
+
+#[test]
+fn test_give_tiles_until_double_2() {
+    let players_amount = 5;
+    let mut remaining_tiles: BTreeSet<u32> = Default::default();
+
+    let tiles = vec![
+        Tile::new(Face::Zero, Face::One),
+        Tile::new(Face::Two, Face::One),
+        Tile::new(Face::Three, Face::Zero),
+        Tile::new(Face::Zero, Face::One),
+        Tile::new(Face::Two, Face::Eleven),
+    ];
+
+    for i in 0..tiles.len() {
+        remaining_tiles.insert(i as u32);
+    }
+
+    let mut tile_to_player = Default::default();
+
+    let matching_tile_id = give_tiles_until_double(
+        &mut remaining_tiles,
+        &tiles,
+        &mut tile_to_player,
+        players_amount,
+    );
+
+    // Verify that everyone has one tile
+    assert_eq!(tile_to_player.len(), players_amount);
+
+    assert!(matching_tile_id.is_none());
+}
+
+#[test]
+fn test_give_tiles_until_double_3() {
+    let players_amount = 5;
+    let mut remaining_tiles: BTreeSet<u32> = Default::default();
+
+    let tiles = vec![
+        Tile::new(Face::Zero, Face::One),
+        Tile::new(Face::Two, Face::Two),
+        Tile::new(Face::Three, Face::Zero),
+        Tile::new(Face::Zero, Face::One),
+        Tile::new(Face::Eleven, Face::Eleven),
+        Tile::new(Face::Twelve, Face::Eleven),
+        Tile::new(Face::Eleven, Face::Twelve),
+    ];
+
+    for i in 0..tiles.len() {
+        remaining_tiles.insert(i as u32);
+    }
+
+    let mut tile_to_player = Default::default();
+
+    let matching_tile_id = give_tiles_until_double(
+        &mut remaining_tiles,
+        &tiles,
+        &mut tile_to_player,
+        players_amount,
+    );
+
+    // Verify that everyone has one tile
+    assert_eq!(tile_to_player.len(), players_amount);
+
+    assert!(matching_tile_id.is_some());
+
+    let start_tile = tiles[matching_tile_id.unwrap().0 as usize];
+    assert!(start_tile.is_double());
+    assert_eq!(start_tile.left, Face::Eleven);
+    assert_eq!(matching_tile_id.unwrap().1, 4);
+}
