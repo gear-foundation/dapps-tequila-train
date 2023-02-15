@@ -56,7 +56,7 @@ export const PlayerConsSection = () => {
     <div className="flex justify-between bg-[#D6FE51] py-3 px-7 rounded-2xl border border-dark-500 border-opacity-15">
       <div className="flex flex-wrap items-center gap-2 min-h-[72px]">
         {wasm &&
-          wasm.playersTiles[wasm.currentPlayer - 1].map((tile, i) => (
+          wasm.playersTiles[wasm.currentPlayer].map((tile, i) => (
             <PlayerDomino
               tile={tile}
               key={i}

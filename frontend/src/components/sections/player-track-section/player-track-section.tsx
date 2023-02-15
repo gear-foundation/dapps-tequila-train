@@ -20,6 +20,14 @@ export const PlayerTrackSection = ({ index, train, isUserTrain, active, tiles }:
   const { gameWasm: wasm, playerChoice } = useGame();
   const [isDisabled, setIsDisabled] = useState(false);
 
+  const checkIsActiveDominoReverse = () => {
+    if (playerChoice?.tile && tiles && wasm) {
+      const lastTile = tiles.length > 0 ? tiles : wasm.startTile;
+
+      return lastTile[1] === playerChoice.tile[0] ? false : lastTile[1] === playerChoice.tile[1];
+    } else return false;
+  };
+
   useEffect(() => {
     if (playerChoice?.tile && tiles && wasm) {
       setIsDisabled(!isPartialSubset(tiles.length > 0 ? tiles : wasm.startTile, playerChoice.tile));
@@ -56,10 +64,15 @@ export const PlayerTrackSection = ({ index, train, isUserTrain, active, tiles }:
         </span>
       </div>
       <div className="relative flex items-center gap-0.5">
-        {tiles && tiles.map((tile, i) => <DominoItem row tile={tile} key={i} />)}
+        {tiles && tiles.map((tile, i) => <DominoItem row tile={tile} key={i} reverse />)}
 
         {(active || isUserTrain) && (
-          <DominoZone id={index} light={active && !getBgColors(index).isLight} disabled={isDisabled} />
+          <DominoZone
+            id={index}
+            light={active && !getBgColors(index).isLight}
+            disabled={isDisabled}
+            reverse={checkIsActiveDominoReverse()}
+          />
         )}
       </div>
     </div>

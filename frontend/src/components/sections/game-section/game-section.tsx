@@ -19,7 +19,7 @@ export const GameSection = () => {
             <PlayerTrackSection
               index={i}
               isUserTrain={p.hasTrain}
-              active={state?.currentPlayer - 1 === i}
+              active={state?.currentPlayer === i}
               tiles={p.tiles}
             />
           </li>

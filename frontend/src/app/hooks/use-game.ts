@@ -25,9 +25,9 @@ export function useInitGame() {
   useEffect(() => {
     setGame(state);
     if (state && account) {
-      // console.log({ state });
+      console.log({ state });
       setPlayers(state.players);
-      setIsAllowed(account.decodedAddress === state.players[state.currentPlayer - 1]);
+      setIsAllowed(account.decodedAddress === state.players[state.currentPlayer]);
     } else {
       setPlayers([]);
       setIsAllowed(false);
@@ -110,11 +110,11 @@ export function useWasmState(payload?: AnyJson, isReadOnError?: boolean) {
   }, [api, programId, wasm, functionName]);
 
   useEffect(() => {
-    // console.log('wasm state: ', state);
+    console.log('wasm state: ', state);
     setGameWasm(state);
 
     if (state) {
-      setPlayerTiles(state.playersTiles[state.currentPlayer - 1]);
+      setPlayerTiles(state.playersTiles[state.currentPlayer]);
     } else {
       setPlayerTiles(undefined);
     }

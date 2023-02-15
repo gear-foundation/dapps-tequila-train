@@ -6,9 +6,10 @@ type Props = {
   light?: boolean;
   disabled?: boolean;
   id: number;
+  reverse?: boolean;
 };
 
-export const DominoZone = ({ light, id, disabled }: Props) => {
+export const DominoZone = ({ light, id, disabled, reverse }: Props) => {
   const { selectedDomino, setPlayerChoice, playerChoice } = useGame();
 
   const onClick = () => {
@@ -41,7 +42,9 @@ export const DominoZone = ({ light, id, disabled }: Props) => {
       )}
       onClick={onClick}
       disabled={disabled}>
-      {!disabled && selectedDomino && playerChoice?.track_id === id && <DominoItem row tile={selectedDomino[1]} />}
+      {!disabled && selectedDomino && playerChoice?.track_id === id && (
+        <DominoItem row tile={selectedDomino[1]} reverse={reverse} />
+      )}
     </button>
   );
 };
