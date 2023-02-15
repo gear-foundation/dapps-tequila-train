@@ -107,3 +107,11 @@ body.body {
   opacity: 0.7;
   filter: blur(50px);
 }
+
+.text-transparent-primary {
+  background: radial-gradient(136.03% 142.06% at 47.37% 6.07%, #52d88c 0%, #4dc383 7.98%, #42946e 27.89%, #3a725f 45.54%, #355e56 60.07%, #335653 69.7%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}

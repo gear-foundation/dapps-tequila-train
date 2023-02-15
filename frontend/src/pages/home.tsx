@@ -4,10 +4,15 @@ import { GameSection } from '../components/sections/game-section';
 import clsx from 'clsx';
 import { useInitGame, useWasmState } from '../app/hooks/use-game';
 import * as React from 'react';
+import { WinnerPopup } from '../components/popups/winner-popup/winner-popup';
+import { useState } from 'react';
 
 export const Home = () => {
   useInitGame();
   useWasmState();
+
+  const [a, setA] = useState(false);
+  const onTest = () => setA(true);
 
   const { account } = useAccount();
   return (
@@ -20,6 +25,7 @@ export const Home = () => {
           <LoginSection />
         </div>
       )}
+      <WinnerPopup isOpen={a} setIsOpen={setA} />
     </section>
   );
 };

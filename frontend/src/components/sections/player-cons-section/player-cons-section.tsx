@@ -3,6 +3,8 @@ import { useGameMessage } from 'app/hooks/use-game';
 import { PlayerDomino } from '../../common/player-domino';
 import { DominoTileType } from 'app/types/game';
 import { getTileId } from 'app/utils';
+import { WinnerPopup } from '../../popups/winner-popup/winner-popup';
+import { useState } from 'react';
 
 export const PlayerConsSection = () => {
   const { setIsPending, isPending, setOpenEmptyPopup } = useApp();
