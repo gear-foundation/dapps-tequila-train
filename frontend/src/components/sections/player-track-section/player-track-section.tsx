@@ -4,10 +4,11 @@ import { getBgColors, isPartialSubset } from 'app/utils';
 import { DominoItem } from '../../common/domino-item';
 import { DominoZone } from '../../common/domino-zone';
 import { DominoTileType } from 'app/types/game';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useApp, useGame } from '../../../app/context';
 import { PlayerTrain } from '../../common/player-train';
 import { useAccount } from '@gear-js/react-hooks';
+import { useRefDimensions } from '../../../app/hooks/use-ref-dimensions';
 
 const players = ['Rojo', 'Oscuro', 'Naranja', 'Amarillo', 'Gris', 'Verde', 'Azul', 'Morado'];
 
@@ -18,17 +19,29 @@ type Props = {
   active?: boolean;
   tiles?: DominoTileType[];
 };
+
+const SPACING = 2;
+const CARD_WIDTH = 72;
+
 export const PlayerTrackSection = ({ index, train, isUserTrain, active, tiles }: Props) => {
   const { account } = useAccount();
   const { isAllowed } = useApp();
   const { gameWasm: wasm, playerChoice } = useGame();
   const [isDisabled, setIsDisabled] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const [w] = useRefDimensions(ref);
+  const [arr, setArr] = useState<DominoTileType[] | undefined>(tiles);
 
   useEffect(() => {
-    if (wasm?.players[index] === account?.decodedAddress) {
-      console.log({ isDisabled, user: wasm?.players[index] === account?.decodedAddress });
+    if (tiles) {
+      const temp = tiles;
+      const space = Math.floor(w / (CARD_WIDTH + (tiles?.length - 1) * SPACING));
+
+      if (space <= tiles.length) {
+        setArr(temp.slice((space - 2) * -1));
+      }
     }
-  }, [account?.decodedAddress, isDisabled, wasm?.players]);
+  }, [w, tiles]);
 
   const checkIsActiveDominoReverse = () => {
     if (playerChoice?.tile && tiles && wasm) {
@@ -67,6 +80,11 @@ export const PlayerTrackSection = ({ index, train, isUserTrain, active, tiles }:
         getBgColors(index).backdrop,
       )}>
       <div className="relative grid grid-cols-[44px_1fr] items-center gap-3">
+        {tiles && tiles.length > 0 && (
+          <span className="absolute top-1/2 right-0 -translate-y-1/2 font-kanit font-bold w-6 h-6 bg-white/50 text-center rounded-full">
+            {tiles?.length}
+          </span>
+        )}
         {train && (
           <Icon
             name="train"
@@ -94,20 +112,23 @@ export const PlayerTrackSection = ({ index, train, isUserTrain, active, tiles }:
           {train ? 'Tequila Train' : `Señor ${players[index]}`}
         </span>
       </div>
-      <div className="relative flex items-center gap-0.5">
-        {tiles &&
-          tiles.map((tile, i) => (
-            <DominoItem row tile={tile} key={i} reverse={checkIsRowDominoReverse(tile, i, tiles)} />
-          ))}
 
-        {(active || isUserTrain) && isAllowed && (
-          <DominoZone
-            id={index}
-            light={active && !getBgColors(index).isLight}
-            disabled={isDisabled}
-            reverse={checkIsActiveDominoReverse()}
-          />
-        )}
+      <div className="relative flex overflow-auto max-w-full" ref={ref}>
+        <div className="flex items-center gap-0.5 ">
+          {arr &&
+            arr.map((tile, i) => (
+              <DominoItem row tile={tile} key={i} reverse={checkIsRowDominoReverse(tile, i, arr)} />
+            ))}
+
+          {(active || isUserTrain) && isAllowed && (
+            <DominoZone
+              id={index}
+              light={active && !getBgColors(index).isLight}
+              disabled={isDisabled}
+              reverse={checkIsActiveDominoReverse()}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

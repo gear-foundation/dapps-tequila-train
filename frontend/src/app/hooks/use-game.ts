@@ -121,7 +121,7 @@ export function useWasmState(payload?: AnyJson, isReadOnError?: boolean) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
-  useEffect(() => {
-    console.log({ playerChoice });
-  }, [playerChoice]);
+  // useEffect(() => {
+  //   console.log({ playerChoice });
+  // }, [playerChoice]);
 }
