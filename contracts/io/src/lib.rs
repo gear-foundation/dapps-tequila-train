@@ -160,7 +160,6 @@ fn tiles_per_person(players_amount: usize) -> usize {
 }
 
 /// Get random number from BTreeSet
-/// #[cfg(not(test))]
 fn get_random_from_set<T: Copy>(set: &BTreeSet<T>) -> T {
     let max_index = set.len();
     let index = (get_random_u32() as usize) % max_index;
@@ -264,7 +263,8 @@ impl GameState {
             );
         }
 
-        let (start_tile, start_player) = starting_pair.expect("failed to determine initial game state");
+        let (start_tile, start_player) =
+            starting_pair.expect("failed to determine initial game state");
 
         // Remove starting tile from set
         tile_to_player.remove(&start_tile);
