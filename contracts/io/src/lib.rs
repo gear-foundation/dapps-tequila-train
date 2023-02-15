@@ -133,10 +133,17 @@ pub enum State {
     Winner(ActorId),
 }
 
+#[cfg(not(test))]
 fn get_random_u32() -> u32 {
     let salt = msg::id();
     let (hash, _num) = exec::random(salt.into()).expect("internal error: random call failed");
     u32::from_le_bytes([hash[0], hash[1], hash[2], hash[3]])
+}
+
+/// mock for test
+#[cfg(test)]
+fn get_random_u32() -> u32 {
+    0u32
 }
 
 /// - 2..4 players: 8 tiles
@@ -153,6 +160,7 @@ fn tiles_per_person(players_amount: usize) -> usize {
 }
 
 /// Get random number from BTreeSet
+/// #[cfg(not(test))]
 fn get_random_from_set<T: Copy>(set: &BTreeSet<T>) -> T {
     let max_index = set.len();
     let index = (get_random_u32() as usize) % max_index;
@@ -257,6 +265,9 @@ impl GameState {
         }
 
         let (start_tile, start_player) = starting_pair.expect("failed to determine initial game state");
+
+        // Remove starting tile from set
+        tile_to_player.remove(&start_tile);
 
         Some(GameState {
             players: initial_data.players.clone(),

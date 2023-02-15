@@ -68,43 +68,34 @@ fn test_build_tile_collection() {
 #[test]
 fn test_give_tiles_until_double() {
     let players_amount = 3;
-    let mut remaining_tiles = BTreeSet::new();
+    let mut remaining_tiles: BTreeSet<u32> = Default::default();
 
     let tiles = vec![
         Tile::new(Face::Zero, Face::One),
         Tile::new(Face::Two, Face::Two),
         Tile::new(Face::Three, Face::Zero),
-        Tile::new(Face::Two, Face::Three),
-        Tile::new(Face::One, Face::Four),
-        Tile::new(Face::Five, Face::Six),
-        Tile::new(Face::Seven, Face::Seven),
     ];
 
     for i in 0..tiles.len() {
         remaining_tiles.insert(i as u32);
     }
 
-    let mut tile_to_player = BTreeMap::new();
+    let mut tile_to_player = Default::default();
 
     let matching_tile_id = give_tiles_until_double(
         &mut remaining_tiles,
         &tiles,
         &mut tile_to_player,
-        &players,
+        players_amount,
     );
 
     // Verify that everyone has one tile
-    assert_eq!(tile_to_player.len(), players.len());
-    for player_id in 0..players.len() {
-        assert!(tile_to_player.values().any(|&id| id == (player_id as u32)));
-    }
+    assert_eq!(tile_to_player.len(), players_amount);
 
-    if let Some((tile_id, _)) = matching_tile_id {
-        // If matching tile was found, verify that it is indeed a double tile
-        let matching_tile = &tiles[tile_id as usize];
-        assert!(matching_tile.is_double());
-    } else {
-        // If no matching tile was found, verify that all tiles were dealt
-        assert_eq!(remaining_tiles.len(), 0);
-    }
+    assert!(matching_tile_id.is_some());
+
+    let start_tile = tiles[matching_tile_id.unwrap().0 as usize];
+    assert!(start_tile.is_double());
+    assert_eq!(start_tile.left, Face::Two);
+    assert_eq!(matching_tile_id.unwrap().1, 1);
 }
