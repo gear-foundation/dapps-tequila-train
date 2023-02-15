@@ -4,10 +4,11 @@ import { DominoItem } from '../domino-item';
 
 type Props = {
   light?: boolean;
+  disabled?: boolean;
   id: number;
 };
 
-export const DominoZone = ({ light, id }: Props) => {
+export const DominoZone = ({ light, id, disabled }: Props) => {
   const { selectedDomino, setPlayerChoice, playerChoice } = useGame();
 
   const onClick = () => {
@@ -28,17 +29,19 @@ export const DominoZone = ({ light, id }: Props) => {
     <button
       className={clsx(
         'inline-flex justify-center items-center w-18 h-9 -m-mx border border-dashed rounded-lg transition-colors',
+        'disabled:bg-error/15 disabled:border-error',
         playerChoice?.track_id === id
-          ? 'hover:bg-primary/30 hover:border-primary'
-          : 'hover:bg-primary/15 hover:border-primary',
+          ? 'enabled:hover:bg-primary/30 enabled:hover:border-primary'
+          : 'enabled:hover:bg-primary/15 enabled:hover:border-primary',
         playerChoice?.track_id === id
-          ? 'bg-primary/15 border-primary'
+          ? 'enabled:bg-primary/15 enabled:border-primary'
           : light
-          ? 'bg-white/15 border-white'
-          : 'bg-black/15 border-black',
+          ? 'enabled:bg-white/15 enabled:border-white'
+          : 'enabled:bg-black/15 enabled:border-black',
       )}
-      onClick={onClick}>
-      {selectedDomino && playerChoice?.track_id === id && <DominoItem row tile={selectedDomino[1]} />}
+      onClick={onClick}
+      disabled={disabled}>
+      {!disabled && selectedDomino && playerChoice?.track_id === id && <DominoItem row tile={selectedDomino[1]} />}
     </button>
   );
 };

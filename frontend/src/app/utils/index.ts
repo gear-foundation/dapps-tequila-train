@@ -58,3 +58,6 @@ export const getTileId = (tile: DominoTileType, tiles: StateDominoTileType[]): n
   const objFromArray = { left: strings[tile[0]], right: strings[tile[1]] };
   return tiles.findIndex((tile) => tile.left === objFromArray.left && tile.right === objFromArray.right);
 };
+
+export const isSubset = (array1: any[], array2: any[]) => array2.every((element) => array1.includes(element));
+export const isPartialSubset = (array1: any[], array2: any[]) => array2.some((element) => array1.includes(element));

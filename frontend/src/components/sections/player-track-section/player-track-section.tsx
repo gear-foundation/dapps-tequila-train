@@ -1,9 +1,11 @@
 import { Icon } from '../../ui/icon';
 import clsx from 'clsx';
-import { getBgColors } from 'app/utils';
+import { getBgColors, isPartialSubset } from 'app/utils';
 import { DominoItem } from '../../common/domino-item';
 import { DominoZone } from '../../common/domino-zone';
 import { DominoTileType } from 'app/types/game';
+import { useEffect, useState } from 'react';
+import { useGame } from '../../../app/context';
 
 const players = ['Rojo', 'Oscuro', 'Naranja', 'Amarillo', 'Gris', 'Verde', 'Azul', 'Morado'];
 
@@ -15,6 +17,17 @@ type Props = {
   tiles?: DominoTileType[];
 };
 export const PlayerTrackSection = ({ index, train, isUserTrain, active, tiles }: Props) => {
+  const { gameWasm: wasm, playerChoice } = useGame();
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  useEffect(() => {
+    if (playerChoice?.tile && tiles && wasm) {
+      setIsDisabled(!isPartialSubset(tiles.length > 0 ? tiles : wasm.startTile, playerChoice.tile));
+    } else {
+      setIsDisabled(false);
+    }
+  }, [playerChoice, wasm]);
+
   return (
     <div
       className={clsx(
@@ -45,7 +58,9 @@ export const PlayerTrackSection = ({ index, train, isUserTrain, active, tiles }:
       <div className="relative flex items-center gap-0.5">
         {tiles && tiles.map((tile, i) => <DominoItem row tile={tile} key={i} />)}
 
-        {(active || isUserTrain) && <DominoZone id={index} light={active && !getBgColors(index).isLight} />}
+        {(active || isUserTrain) && (
+          <DominoZone id={index} light={active && !getBgColors(index).isLight} disabled={isDisabled} />
+        )}
       </div>
     </div>
   );
