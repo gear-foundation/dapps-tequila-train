@@ -3,8 +3,11 @@ name: Deploy
 on:
   workflow_dispatch:
 
+env:
+  CI: false
+
 jobs:
-  deploy-fronend:
+  deploy-frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -15,17 +18,18 @@ jobs:
         with:
           node-version: 16
 
-      - name: Install dependencies
-        run: cd frontend && npm install
+      - name: Install yarn
+        run: sudo npm i yarn -g
 
       - name: Build
-        run: cd frontend && npm run build
+        run: |
+          make init-frontend
+          make frontend
 
       - name: Deploy
-        uses: dawidd6/action-ansible-playbook@v2
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          directory: ansible
-          playbook: deploy.yml
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          options: -u ec2-user
-          inventory: tequila-train.com
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: frontend/build
+          cname: tequila-train.com
+          force_orphan: true
