@@ -43,6 +43,11 @@ export type GameStateResponse = {
   tileToPlayer: {};
   tracks: StatePlayerTrackType[];
   winner: null | HexString;
+  state: {
+    Winner?: HexString;
+    winner?: HexString;
+    playing?: null;
+  };
 };
 
 export type GameWasmStateResponse = {

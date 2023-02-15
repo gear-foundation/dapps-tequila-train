@@ -6,12 +6,12 @@ import { SelectDominoPopup } from '../../popups/select-domino-popup/select-domin
 import clsx from 'clsx';
 import { getBgColors } from '../../../app/utils';
 import { Icon } from '../../ui/icon';
-import { PlayerTrain } from '../../common/player-train';
 import { DominoItem } from '../../common/domino-item';
-import { DominoZone } from '../../common/domino-zone';
+import { WinnerPopup } from '../../popups/winner-popup/winner-popup';
+import * as React from 'react';
 
 export const GameSection = () => {
-  const { isAllowed, openEmptyPopup, setOpenEmptyPopup } = useApp();
+  const { isAllowed, openEmptyPopup, setOpenEmptyPopup, setOpenWinnerPopup, openWinnerPopup } = useApp();
   const { gameWasm: state, players } = useGame();
 
   return (
@@ -58,6 +58,7 @@ export const GameSection = () => {
         </ul>
       </div>
 
+      <WinnerPopup isOpen={openWinnerPopup} setIsOpen={setOpenWinnerPopup} />
       <SelectDominoPopup isOpen={openEmptyPopup} setIsOpen={setOpenEmptyPopup} />
     </div>
   );

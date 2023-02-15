@@ -17,7 +17,7 @@ function useReadGameState<T>() {
 }
 
 export function useInitGame() {
-  const { setIsAllowed } = useApp();
+  const { setIsAllowed, setOpenWinnerPopup } = useApp();
   const { account } = useAccount();
   const { setGame, setPlayers } = useGame();
   const { state } = useReadGameState<GameStateResponse>();
@@ -25,9 +25,13 @@ export function useInitGame() {
   useEffect(() => {
     setGame(state);
     if (state && account) {
-      console.log({ state });
+      // console.log({ state });
       setPlayers(state.players);
       setIsAllowed(account.decodedAddress === state.players[state.currentPlayer]);
+
+      if (state.state?.Winner || state.state?.winner) {
+        setOpenWinnerPopup(true);
+      }
     } else {
       setPlayers([]);
       setIsAllowed(false);
@@ -110,7 +114,7 @@ export function useWasmState(payload?: AnyJson, isReadOnError?: boolean) {
   }, [api, programId, wasm, functionName]);
 
   useEffect(() => {
-    console.log('wasm state: ', state);
+    // console.log('wasm state: ', state);
     setGameWasm(state);
 
     if (state) {
