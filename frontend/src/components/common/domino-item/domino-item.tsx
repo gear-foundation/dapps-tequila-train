@@ -8,8 +8,8 @@ type Props = {
 };
 export const DominoItem = ({ row, tile }: Props) => {
   return (
-    <div className={clsx(row && 'flex')}>
-      <div
+    <span className={clsx(row && 'flex')}>
+      <span
         className={clsx(
           'flex items-center justify-center w-9 h-9 bg-white border border-[#1E942A]',
           row ? ' rounded-l-lg' : ' rounded-t-lg',
@@ -23,8 +23,8 @@ export const DominoItem = ({ row, tile }: Props) => {
             className={clsx(row && 'rotate-90')}
           />
         )}
-      </div>
-      <div
+      </span>
+      <span
         className={clsx(
           'flex items-center justify-center w-9 h-9 bg-white border border-[#1E942A]',
           row ? 'rounded-r-lg' : 'rounded-b-lg',
@@ -38,7 +38,7 @@ export const DominoItem = ({ row, tile }: Props) => {
             className={clsx(row && 'rotate-90')}
           />
         )}
-      </div>
-    </div>
+      </span>
+    </span>
   );
 };

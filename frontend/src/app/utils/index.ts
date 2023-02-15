@@ -1,6 +1,9 @@
 import { AlertContainerFactory } from '@gear-js/react-hooks';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import { LOCAL_STORAGE } from 'app/consts';
+import { DominoTileType, StateDominoTileType } from '../types/game';
+import { useGame } from '../context';
+import { useEffect, useState } from 'react';
 
 export const copyToClipboard = async (key: string, alert: AlertContainerFactory, successfulText?: string) => {
   try {
@@ -33,4 +36,25 @@ export const getBgColors = (v: number) => {
     default:
       return { train: 'text-[#EBF1EE]', backdrop: 'bg-[#67CB4D]', isLight: false, isDark: false };
   }
+};
+
+const strings = [
+  'Zero',
+  'One',
+  'Two',
+  'Three',
+  'Four',
+  'Five',
+  'Six',
+  'Seven',
+  'Eight',
+  'Nine',
+  'Ten',
+  'Eleven',
+  'Twelve',
+];
+
+export const getTileId = (tile: DominoTileType, tiles: StateDominoTileType[]): number => {
+  const objFromArray = { left: strings[tile[0]], right: strings[tile[1]] };
+  return tiles.findIndex((tile) => tile.left === objFromArray.left && tile.right === objFromArray.right);
 };

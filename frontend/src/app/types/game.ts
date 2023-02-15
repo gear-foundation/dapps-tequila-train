@@ -54,3 +54,10 @@ export type GameWasmStateResponse = {
   tracks: PlayerTrackType[];
   winner: null | HexString;
 };
+
+export type PlayerChoiceType = {
+  tile?: DominoTileType;
+  tile_id?: number;
+  track_id?: number;
+  remove_train?: boolean;
+};

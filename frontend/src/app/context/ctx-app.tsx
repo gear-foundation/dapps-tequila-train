@@ -5,8 +5,8 @@ type Program = {
   setIsPending: Dispatch<SetStateAction<boolean>>;
   isAllowed: boolean;
   setIsAllowed: Dispatch<SetStateAction<boolean>>;
-  isDataReady: boolean;
-  setIsDataReady: Dispatch<SetStateAction<boolean>>;
+  openEmptyPopup: boolean;
+  setOpenEmptyPopup: Dispatch<SetStateAction<boolean>>;
 };
 
 export const AppCtx = createContext({} as Program);
@@ -14,15 +14,15 @@ export const AppCtx = createContext({} as Program);
 const useProgram = (): Program => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isAllowed, setIsAllowed] = useState<boolean>(false);
-  const [isDataReady, setIsDataReady] = useState<boolean>(false);
+  const [openEmptyPopup, setOpenEmptyPopup] = useState<boolean>(false);
 
   return {
     isPending,
     setIsPending,
     isAllowed,
     setIsAllowed,
-    isDataReady,
-    setIsDataReady,
+    openEmptyPopup,
+    setOpenEmptyPopup,
   };
 };
 
