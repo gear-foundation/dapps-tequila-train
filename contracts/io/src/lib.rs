@@ -1,7 +1,10 @@
 #![no_std]
 
 use gmeta::{In, Metadata};
-use gstd::{exec, msg, prelude::*, ActorId};
+use gstd::{prelude::*, ActorId};
+
+#[cfg(not(test))]
+use gstd::{exec, msg};
 
 #[cfg(test)]
 mod test;
@@ -122,8 +125,8 @@ pub struct GameState {
     pub current_player: u32,
     pub tile_to_player: BTreeMap<u32, u32>,
     pub tiles: Vec<Tile>,
-    remaining_tiles: BTreeSet<u32>,
-    state: State,
+    pub remaining_tiles: BTreeSet<u32>,
+    pub state: State,
 }
 
 #[derive(Clone, Copy, Debug, Encode, Decode, TypeInfo)]
