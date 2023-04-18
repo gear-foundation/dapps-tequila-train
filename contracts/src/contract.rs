@@ -21,7 +21,11 @@ extern "C" fn handle() {
 }
 
 fn process_handle() -> Result<(), ContractError> {
-    let game_launcher = unsafe { GAME_LAUNCHER.as_mut().unwrap() };
+    let game_launcher = unsafe {
+        GAME_LAUNCHER
+            .as_mut()
+            .expect("The contract is not initialized")
+    };
     let check_winner = |game_state: &GameState| match game_state.state() {
         State::Stalled => {
             msg::reply_bytes("The game stalled. No one is able to make a turn", 0)
