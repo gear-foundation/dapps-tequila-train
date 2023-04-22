@@ -2,8 +2,7 @@ import { Icon } from '../../ui/icon';
 import clsx from 'clsx';
 import { getBgColors } from 'app/utils';
 import { useGame } from '../../../app/context';
-
-const players = ['Rojo', 'Oscuro', 'Naranja', 'Amarillo', 'Gris', 'Verde', 'Azul', 'Morado'];
+import { playerNames } from '../../../app/consts';
 
 type Props = {
   index: number;
@@ -14,7 +13,7 @@ export const PlayerCardSection = ({ index }: Props) => {
   return (
     <div className="max-w-[160px]">
       <div className="flex justify-center rounded-t-2xl bg-[#D6FE51] py-3.5 px-2.5 font-medium">
-        Señor {players[index]}
+        Señor {playerNames[index]}
       </div>
       <div
         className={clsx(

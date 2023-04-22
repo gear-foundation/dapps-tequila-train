@@ -9,8 +9,7 @@ import { useApp, useGame } from '../../../app/context';
 import { PlayerTrain } from '../../common/player-train';
 import { useAccount } from '@gear-js/react-hooks';
 import { useRefDimensions } from '../../../app/hooks/use-ref-dimensions';
-
-const players = ['Rojo', 'Oscuro', 'Naranja', 'Amarillo', 'Gris', 'Verde', 'Azul', 'Morado'];
+import { playerNames } from '../../../app/consts';
 
 type Props = {
   index: number;
@@ -109,7 +108,7 @@ export const PlayerTrackSection = ({ index, train, isUserTrain, active, tiles }:
             'uppercase leading-4 font-semibold tracking-[0.03em] w-min',
             active && !getBgColors(index).isLight && 'text-white',
           )}>
-          {train ? 'Tequila Train' : `Señor ${players[index]}`}
+          {train ? 'Tequila Train' : `Señor ${playerNames[index]}`}
         </span>
       </div>
 
