@@ -1,8 +1,6 @@
 // declaring .wasm, since TS doesn't support experimental modules
 // source: https://github.com/microsoft/TypeScript/issues/31713
 
-import { ReactNode } from 'react';
-
 declare module '*.wasm' {
   const value: string;
   export default value;
@@ -11,11 +9,4 @@ declare module '*.wasm' {
 declare module '*.txt' {
   const value: string;
   export default value;
-}
-
-declare global {
-  type BaseComponentProps = {
-    children?: ReactNode;
-    className?: string;
-  }
 }

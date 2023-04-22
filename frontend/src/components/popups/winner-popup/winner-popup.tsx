@@ -16,8 +16,8 @@ export const WinnerPopup = ({ setIsOpen, isOpen }: Props) => {
 
   return (
     <PopupContainer isOpen={isOpen} setIsOpen={setIsOpen} overlayCn="bg-black/90 backdrop-blur">
-      <div className="flex items-center pt-40">
-        <div className="relative w-full max-w-[720px] transform transition-all">
+      <div className="flex items-center pt-40 w-full">
+        <div className="relative w-full max-w-3xl transform transition-all">
           <img
             src="/images/winner.svg"
             alt="Winner"
