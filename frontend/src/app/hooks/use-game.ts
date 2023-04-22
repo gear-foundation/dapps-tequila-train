@@ -2,14 +2,16 @@ import { useApp, useGame } from 'app/context';
 import { useEffect, useState } from 'react';
 import { useAccount, useAlert, useApi, useReadFullState } from '@gear-js/react-hooks';
 import { useMetadata, useWasmMetadata } from './use-metadata';
-import meta from 'assets/meta/meta.txt';
-import metaWasm from 'assets/meta/state.meta.wasm';
 import { ENV } from 'app/consts';
 import { useSendMessage } from './use-send-message';
 import { GameStateResponse, GameWasmStateResponse } from '../types/game';
 import { HexString } from '@polkadot/util/types';
 import { getStateMetadata, MessagesDispatched } from '@gear-js/api';
 import { AnyJson } from '@polkadot/types/types';
+// @ts-ignore
+import meta from 'assets/meta/meta.txt';
+// @ts-ignore
+import metaWasm from 'assets/meta/state.meta.wasm';
 
 function useReadGameState<T>() {
   const { metadata } = useMetadata(meta);

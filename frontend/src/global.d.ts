@@ -14,7 +14,7 @@ declare module '*.txt' {
 }
 
 declare global {
-  interface BaseComponentProps {
+  type BaseComponentProps = {
     children?: ReactNode;
     className?: string;
   }
