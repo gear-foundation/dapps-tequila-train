@@ -1,5 +1,5 @@
 {
-  "name": "gear-tamagotchi",
+  "name": "gear-dapp-tequila-train",
   "private": true,
   "scripts": {
     "start": "react-app-rewired start",
@@ -8,19 +8,19 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@gear-js/api": "0.30.5",
-    "@gear-js/react-hooks": "0.5.14",
-    "@gear-js/ui": "0.5.17",
+    "@gear-js/api": "0.30.6",
+    "@gear-js/react-hooks": "0.5.15",
+    "@gear-js/ui": "0.5.18",
     "@headlessui/react": "1.7.13",
-    "@polkadot/api": "10.3.2",
+    "@polkadot/api": "10.3.4",
     "@polkadot/extension-dapp": "0.45.5",
     "@polkadot/react-identicon": "3.1.4",
-    "@polkadot/types": "10.3.2",
+    "@polkadot/types": "10.3.4",
     "@polkadot/util": "11.1.3",
     "@polkadot/util-crypto": "11.1.3",
     "@polkadot/wasm-crypto": "7.0.3",
     "clsx": "1.2.1",
-    "framer-motion": "10.11.2",
+    "framer-motion": "10.12.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.10.0",
