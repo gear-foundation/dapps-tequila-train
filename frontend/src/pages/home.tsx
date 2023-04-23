@@ -3,16 +3,23 @@ import { LoginSection } from 'components/sections/login-section';
 import { GameSection } from '../components/sections/game-section';
 import clsx from 'clsx';
 import { useInitGame, useWasmState } from '../app/hooks/use-game';
-import * as React from 'react';
+import { useGame } from '../app/context';
+import { RegistrationSection } from '../components/sections/registration-section';
+
 export const Home = () => {
   useInitGame();
   useWasmState();
 
   const { account } = useAccount();
+  const { game } = useGame();
+
+  console.log({ game });
+
   return (
     <section className={clsx('grid grow', !account && 'place-items-center')}>
       {account ? (
-        <GameSection />
+        // <GameSection />
+        <RegistrationSection />
       ) : (
         <div className="flex flex-col items-center justify-center gap-9 grow">
           <p>Connect your account to start the game</p>
