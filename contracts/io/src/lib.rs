@@ -12,12 +12,12 @@ mod test;
 pub struct ContractMetadata;
 
 impl Metadata for ContractMetadata {
-    type Init = In<Vec<ActorId>>;
+    type Init = ();
     type Handle = In<Command>;
     type Others = ();
     type Reply = ();
     type Signal = ();
-    type State = GameState;
+    type State = Option<GameState>;
 }
 
 #[derive(

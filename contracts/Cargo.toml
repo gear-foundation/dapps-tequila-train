@@ -7,7 +7,7 @@ authors = ["Gear Technologies"]
 
 [dependencies]
 tequila-io = { path = "io" }
-gstd = { git = "https://github.com/gear-tech/gear.git", branch = "testnet" }
+gstd = { git = "https://github.com/gear-tech/gear.git", branch = "testnet", features = ["debug"] }
 gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "testnet" }
 hashbrown = "0.13"
 

@@ -95,7 +95,6 @@ extern "C" fn state() {
             .expect("Game launcher is not initialized")
             .game_state
             .clone()
-            .expect("Game state is not initialized")
     })
     .expect("Failed to encode or reply with the game state");
 }
