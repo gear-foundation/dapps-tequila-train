@@ -37,7 +37,7 @@ fn process_handle() -> Result<(), ContractError> {
             msg::reply_bytes(response.as_bytes(), 0).expect("failed to reply");
             true
         }
-        State::Playing => false,
+        State::Playing | State::Registration => false,
     };
 
     if let Some(game_state) = &game_launcher.game_state {
@@ -95,6 +95,7 @@ extern "C" fn state() {
             .expect("Game launcher is not initialized")
             .game_state
             .clone()
+            .get_or_insert(Default::default())
     })
     .expect("Failed to encode or reply with the game state");
 }

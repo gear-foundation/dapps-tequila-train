@@ -17,7 +17,7 @@ impl Metadata for ContractMetadata {
     type Others = ();
     type Reply = ();
     type Signal = ();
-    type State = Option<GameState>;
+    type State = GameState;
 }
 
 #[derive(
@@ -130,7 +130,7 @@ pub struct TrackData {
     pub has_train: bool,
 }
 
-#[derive(Debug, TypeInfo, Encode, Decode, Clone)]
+#[derive(Debug, TypeInfo, Encode, Decode, Clone, Default)]
 pub struct GameState {
     pub players: Vec<(ActorId, String)>,
     pub tracks: Vec<TrackData>,
@@ -143,11 +143,13 @@ pub struct GameState {
     pub state: State,
 }
 
-#[derive(Clone, Debug, Encode, Decode, TypeInfo)]
+#[derive(Clone, Debug, Encode, Decode, TypeInfo, Default, PartialEq, Eq)]
 pub enum State {
     Playing,
     Stalled,
     Winner((ActorId, String)),
+    #[default]
+    Registration,
 }
 
 #[derive(Debug, Clone, Default, TypeInfo, Encode, Decode)]

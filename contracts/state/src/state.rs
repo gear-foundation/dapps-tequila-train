@@ -1,6 +1,6 @@
 use gmeta::metawasm;
 use gstd::{prelude::*, ActorId};
-use tequila_io::{GameState as GameStateRaw, State};
+use tequila_io::{GameState as GameStateRaw, State as GameStatus};
 
 use self::helpers::map_tile_face_into_u32;
 
@@ -10,7 +10,7 @@ pub struct TrackData {
     pub has_train: bool,
 }
 
-#[derive(Encode, Decode, TypeInfo)]
+#[derive(Encode, Decode, TypeInfo, Default)]
 pub struct GameState {
     /// List of all players
     pub players: Vec<(ActorId, String)>,
@@ -25,7 +25,7 @@ pub struct GameState {
     /// Shot counters
     pub shot_counters: Vec<u32>,
     /// Game state
-    pub state: State,
+    pub state: GameStatus,
 }
 
 #[metawasm]
@@ -33,6 +33,12 @@ pub mod metafns {
     pub type State = GameStateRaw;
 
     pub fn game_state(state: State) -> GameState {
+        if state.state == GameStatus::Registration {
+            return GameState {
+                players: state.players,
+                ..Default::default()
+            };
+        }
         let current_tile = state.tiles[state.start_tile as usize];
         let mut players_tiles = vec![Vec::<(u32, u32)>::new(); state.players.len()];
         for pair in state.tile_to_player.iter() {
