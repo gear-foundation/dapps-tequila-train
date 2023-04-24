@@ -58,6 +58,7 @@ export type GameWasmStateResponse = {
   startTile: DominoTileType;
   tracks: PlayerTrackType[];
   winner: null | HexString;
+  state: Partial<Record<'registration', null | boolean | string>>;
 };
 
 export type PlayerChoiceType = {

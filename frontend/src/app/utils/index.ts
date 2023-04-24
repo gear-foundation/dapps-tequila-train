@@ -65,3 +65,4 @@ export const isPartialSubset = (array1: any[], array2: any[]) => array2.some((el
 
 export const hexRequired = (value: string) =>
   !value ? 'Field is required' : !isHex(value) ? 'String must be in Hex format' : null;
+export const stringRequired = (value: string) => (!value ? 'Field is required' : null);
