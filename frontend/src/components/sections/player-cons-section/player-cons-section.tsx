@@ -27,17 +27,17 @@ export const PlayerConsSection = () => {
       setSelectedDomino([i, tile]);
     }
 
-    if (game) {
+    if (game?.gameState) {
       if (playerChoice) {
         playerChoice.tile !== tile
-          ? setPlayerChoice({ ...playerChoice, tile, tile_id: getTileId(tile, game.tiles) })
+          ? setPlayerChoice({ ...playerChoice, tile, tile_id: getTileId(tile, game.gameState?.tiles) })
           : setPlayerChoice({
               ...playerChoice,
               tile: undefined,
               tile_id: undefined,
             });
       } else {
-        setPlayerChoice({ tile, tile_id: getTileId(tile, game.tiles) });
+        setPlayerChoice({ tile, tile_id: getTileId(tile, game.gameState?.tiles) });
       }
     }
   };

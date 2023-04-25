@@ -2,7 +2,7 @@ import { RegistrationForm } from './registration-form';
 import { useGame } from '../../../app/context';
 
 export function RegistrationSection() {
-  const { gameWasm } = useGame();
+  const { game } = useGame();
 
   return (
     <div className="container mt-15 pt-32 pb-15">
@@ -22,7 +22,7 @@ export function RegistrationSection() {
         <div className="basis-[540px] grow lg:grow-0">
           <h2 className="text-[52px] leading-none font-semibold tracking-[0.08em]">Registration...</h2>
           <p className="mt-3 text-white/60 tracking-[0.08em]">
-            Players ({gameWasm?.players.length || 0}/4). Waiting for other players...{' '}
+            Players ({game?.players.players.length || 0}/{game?.maybeLimit || 8}). Waiting for other players...{' '}
           </p>
 
           <div className="mt-6">

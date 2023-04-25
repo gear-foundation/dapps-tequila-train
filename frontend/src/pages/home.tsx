@@ -21,7 +21,7 @@ export const Home = () => {
   return (
     <section className={clsx('grid grow', !account && 'place-items-center')}>
       {account ? (
-        gameWasm?.state?.registration !== null ? (
+        game?.isStarted ? (
           <GameSection />
         ) : (
           <RegistrationSection />

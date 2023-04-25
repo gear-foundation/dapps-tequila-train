@@ -33,32 +33,41 @@ export type PlayerTrackType = {
   tiles: DominoTileType[];
 };
 
-export type GameStateResponse = {
-  currentPlayer: number;
-  players: HexString[];
-  shots: number[];
-  startTile: number;
-  tiles: StateDominoTileType[];
-  remainingTiles: number[];
-  tileToPlayer: {};
-  tracks: StatePlayerTrackType[];
-  winner: null | HexString;
-  state: {
-    Winner?: HexString;
-    winner?: HexString;
-    playing?: null;
+export type IGameState = {
+  gameState: {
+    currentPlayer: number;
+    players: HexString[];
+    remainingTiles: number[];
+    shots: number[];
+    startTile: number;
+    state: {
+      Winner?: HexString;
+      winner?: HexString;
+      playing?: null;
+    } | null;
+    tiles: StateDominoTileType[];
+    tileToPlayer: {};
+    tracks: StatePlayerTrackType[];
+    winner: null | HexString;
   };
+  players: {
+    players: IPlayer[];
+  };
+  isStarted: boolean;
+  maybeLimit: number;
 };
+
+export type IPlayer = [HexString, string];
 
 export type GameWasmStateResponse = {
   currentPlayer: number;
-  players: HexString[];
+  players: IPlayer[];
   playersTiles: Array<DominoTileType[]>;
   shotCounters: number[];
   startTile: DominoTileType;
+  state: Partial<Record<'registration', null | boolean | string>>;
   tracks: PlayerTrackType[];
   winner: null | HexString;
-  state: Partial<Record<'registration', null | boolean | string>>;
 };
 
 export type PlayerChoiceType = {

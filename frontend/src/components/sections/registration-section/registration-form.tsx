@@ -29,7 +29,9 @@ export function RegistrationForm() {
     setIsPending(false);
     reset();
   };
-  const onError = () => setIsPending(false);
+  const onError = () => {
+    setIsPending(false);
+  };
 
   const handleSubmit = form.onSubmit((values) => {
     setIsPending(true);

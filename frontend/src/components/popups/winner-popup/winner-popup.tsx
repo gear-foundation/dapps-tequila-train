@@ -11,8 +11,8 @@ type Props = {
 
 export const WinnerPopup = ({ setIsOpen, isOpen }: Props) => {
   const { game } = useGame();
-  const winnerId = game?.state?.winner;
-  const index = game?.players && winnerId ? game.players.findIndex((id) => id === winnerId) : -1;
+  const winnerId = game?.gameState?.state?.winner;
+  const index = game?.players && winnerId ? game.gameState?.players.findIndex((id) => id === winnerId) : -1;
 
   return (
     <PopupContainer isOpen={isOpen} setIsOpen={setIsOpen} overlayCn="bg-black/90 backdrop-blur">
