@@ -17,7 +17,7 @@ impl Metadata for ContractMetadata {
     type Others = ();
     type Reply = ();
     type Signal = ();
-    type State = GameState;
+    type State = GameLauncher;
 }
 
 #[derive(
