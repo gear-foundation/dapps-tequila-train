@@ -1,6 +1,6 @@
 use gmeta::metawasm;
 use gstd::{prelude::*, ActorId};
-use tequila_io::{GameState as GameStateRaw, State as GameStatus};
+use tequila_io::{GameLauncher, State as GameStatus};
 
 use self::helpers::map_tile_face_into_u32;
 
@@ -30,32 +30,52 @@ pub struct GameState {
 
 #[metawasm]
 pub mod metafns {
-    pub type State = GameStateRaw;
+    pub type State = GameLauncher;
+
+    pub fn is_started(state: State) -> bool {
+        state.is_started
+    }
+
+    pub fn get_limit(state: State) -> Option<u64> {
+        state.maybe_limit
+    }
+
+    pub fn players(state: State) -> Vec<(ActorId, String)> {
+        state.players.get()
+    }
 
     pub fn game_state(state: State) -> GameState {
-        if state.state == GameStatus::Registration {
+        let game_state = state
+            .game_state
+            .expect("Invalid game state. Game is not started.");
+
+        if game_state.state == GameStatus::Registration {
             return GameState {
-                players: state.players,
+                players: game_state.players,
                 ..Default::default()
             };
         }
-        let current_tile = state.tiles[state.start_tile as usize];
-        let mut players_tiles = vec![Vec::<(u32, u32)>::new(); state.players.len()];
-        for pair in state.tile_to_player.iter() {
+
+        let current_tile = game_state.tiles[game_state.start_tile as usize];
+        let mut players_tiles = vec![Vec::<(u32, u32)>::new(); game_state.players.len()];
+
+        for pair in game_state.tile_to_player.iter() {
             players_tiles[*pair.1 as usize].push((
-                map_tile_face_into_u32(state.tiles[*pair.0 as usize].left),
-                map_tile_face_into_u32(state.tiles[*pair.0 as usize].right),
+                map_tile_face_into_u32(game_state.tiles[*pair.0 as usize].left),
+                map_tile_face_into_u32(game_state.tiles[*pair.0 as usize].right),
             ));
         }
-        let current_state = state.state();
+
+        let current_state = game_state.state();
+
         GameState {
-            players: state.players,
-            current_player: state.current_player,
+            players: game_state.players,
+            current_player: game_state.current_player,
             start_tile: (
                 map_tile_face_into_u32(current_tile.left),
                 map_tile_face_into_u32(current_tile.right),
             ),
-            tracks: state
+            tracks: game_state
                 .tracks
                 .iter()
                 .map(|td| TrackData {
@@ -73,7 +93,7 @@ pub mod metafns {
                 })
                 .collect(),
             players_tiles,
-            shot_counters: state.shots,
+            shot_counters: game_state.shots,
             state: current_state,
         }
     }

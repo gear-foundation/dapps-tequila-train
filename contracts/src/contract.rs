@@ -11,7 +11,15 @@ static mut GAME_LAUNCHER: Option<GameLauncher> = None;
 
 #[no_mangle]
 extern "C" fn init() {
-    unsafe { GAME_LAUNCHER = Some(GameLauncher::default()) }
+    let maybe_limit: Option<u64> = msg::load().expect("Unexpected invalid payload.");
+
+    unsafe {
+        GAME_LAUNCHER = Some(if let Some(limit) = maybe_limit {
+            GameLauncher::new_with_limit(limit)
+        } else {
+            GameLauncher::default()
+        })
+    }
 }
 
 #[no_mangle]
@@ -73,8 +81,8 @@ fn process_handle() -> Result<(), ContractError> {
         Command::StartGame => {
             game_launcher.start();
         }
-        Command::RestartGame => {
-            game_launcher.restart();
+        Command::RestartGame(maybe_limit) => {
+            game_launcher.restart(maybe_limit);
         }
     }
 
@@ -91,11 +99,8 @@ fn process_handle() -> Result<(), ContractError> {
 extern "C" fn state() {
     reply(unsafe {
         GAME_LAUNCHER
-            .as_ref()
-            .expect("Game launcher is not initialized")
-            .game_state
             .clone()
-            .get_or_insert(Default::default())
+            .expect("Game launcher is not initialized")
     })
     .expect("Failed to encode or reply with the game state");
 }
