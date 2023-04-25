@@ -5,8 +5,8 @@ export function RegistrationSection() {
   const { game } = useGame();
 
   return (
-    <div className="container mt-15 pt-32 pb-15">
-      <div className="flex space-x-8 justify-between bg-register-section pr-20 pl-11 py-19 min-h-[330px] rounded-[32px] text-white font-kanit">
+    <div className="container my-15 py-32 flex items-center">
+      <div className="grow flex space-x-8 justify-between bg-register-section pr-20 pl-11 py-19 min-h-[330px] rounded-[32px] text-white font-kanit">
         <div className="relative basis-[220px] lg:basis-[365px] grow-0 shrink-0">
           <div className="absolute -inset-y-10 lg:-top-52 lg:-bottom-21.5 inset-x-0">
             <img

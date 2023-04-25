@@ -61,7 +61,7 @@ export const PlayerConsSection = () => {
   };
 
   return (
-    <div className="flex justify-between bg-[#D6FE51] py-3 px-7 rounded-2xl border border-dark-500 border-opacity-15">
+    <div className="relative flex justify-between bg-[#D6FE51] py-3 px-7 rounded-2xl before:absolute before:-inset-px before:-z-1 before:rounded-[17px] before:border before:border-dark-500/15">
       <div className="flex flex-wrap items-center gap-2 min-h-[72px]">
         {wasm &&
           wasm.playersTiles[wasm.currentPlayer].map((tile, i) => (
