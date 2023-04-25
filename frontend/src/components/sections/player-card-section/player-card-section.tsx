@@ -16,8 +16,8 @@ export const PlayerCardSection = ({ index, active }: Props) => {
         <div
           className={clsx(
             'absolute -z-1 bottom-0 -inset-x-px h-[calc(100%+1rem)] -mt-1 bg-[#D6FE51] border-x border-dark-500/15',
-            'before:absolute before:top-0 before:right-full before:w-10 before:h-10 before:bg-[#ebf1ee] before:rounded-b-none before:rounded-l-none before:rounded-t-xl before:rounded-r-xl before:border-r before:border-t before:border-dark-500/15',
-            'after:absolute after:top-0 after:left-full after:w-10 after:h-10 after:bg-[#ebf1ee] after:rounded-t-xl after:rounded-b-none after:rounded-r-none after:rounded-l-none after:border-l after:border-t after:border-dark-500/15',
+            'before:absolute before:top-0 before:right-full before:w-10 before:h-10 before:bg-[#ebf1ee] before:rounded-tr-3xl before:border-r before:border-t before:border-dark-500/15',
+            'after:absolute after:top-0 after:left-full after:w-10 after:h-10 after:bg-[#ebf1ee] after:rounded-tl-3xl after:border-l after:border-t after:border-dark-500/15',
           )}>
           <div
             className={clsx(
