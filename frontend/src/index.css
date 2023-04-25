@@ -86,11 +86,11 @@ body.body {
   }
 
   .btn[disabled] {
-    @apply cursor-not-allowed bg-neutral-500;
+    @apply cursor-not-allowed bg-neutral-400 text-neutral-100;
   }
 
   .btn--loading {
-    @apply opacity-90 gap-2 before:w-4 before:h-4 before:border-2 before:border-neutral-400 before:rounded-full before:border-l-transparent before:border-t-transparent before:animate-spin;
+    @apply opacity-90 gap-2 before:w-4 before:h-4 before:border-2 before:border-neutral-500 before:rounded-full before:border-l-transparent before:border-t-transparent before:animate-spin;
   }
 }
 
