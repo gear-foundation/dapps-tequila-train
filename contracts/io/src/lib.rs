@@ -168,7 +168,7 @@ pub enum State {
 #[derive(Debug, Clone, Default, TypeInfo, Encode, Decode)]
 pub struct GameLauncher {
     pub game_state: Option<GameState>,
-    pub players: Players,
+    pub players: Vec<(ActorId, String)>,
     pub is_started: bool,
     pub maybe_limit: Option<u64>,
 }
@@ -193,7 +193,9 @@ impl GameLauncher {
         assert!(!self.is_started);
 
         self.is_started = true;
-        self.game_state = GameState::new(&self.players);
+        self.game_state = GameState::new(&Players {
+            players: self.players.clone(),
+        });
     }
 
     pub fn restart(&mut self, maybe_limit: Option<u64>) {
@@ -203,17 +205,22 @@ impl GameLauncher {
         self.is_started = false;
         self.game_state = None;
         self.maybe_limit = maybe_limit;
-        self.players.players.clear();
+        self.players.clear();
     }
 
     pub fn register(&mut self, player: ActorId, name: String) {
         assert!(!self.is_started);
+        assert!(self
+            .players
+            .iter()
+            .find(|(p, n)| p == &player || n == &name)
+            .is_none());
 
         if let Some(limit) = self.maybe_limit {
-            assert!(self.players.count() <= limit);
+            assert!(self.players.len() as u64 <= limit);
         }
 
-        self.players.players.push((player, name));
+        self.players.push((player, name));
     }
 }
 

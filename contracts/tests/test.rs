@@ -25,7 +25,7 @@ fn test() {
     let result = program.send(
         2,
         Command::Register {
-            player: ActorId::zero(),
+            player: ActorId::new([1u8; 32]),
             name: "B".to_owned(),
         },
     );
@@ -44,7 +44,7 @@ fn test() {
             .players,
         vec![
             (ActorId::zero(), "A".to_owned()),
-            (ActorId::zero(), "B".to_owned())
+            (ActorId::new([1u8; 32]), "B".to_owned())
         ]
     );
 
@@ -54,7 +54,7 @@ fn test() {
     let result = program.send(
         2,
         Command::Register {
-            player: ActorId::zero(),
+            player: ActorId::new([2u8; 32]),
             name: "C".to_owned(),
         },
     );
@@ -63,7 +63,7 @@ fn test() {
     let result = program.send(
         2,
         Command::Register {
-            player: ActorId::zero(),
+            player: ActorId::new([3u8; 32]),
             name: "D".to_owned(),
         },
     );
@@ -81,8 +81,8 @@ fn test() {
             .expect("Invalid game state. Game is not initialized.")
             .players,
         vec![
-            (ActorId::zero(), "C".to_owned()),
-            (ActorId::zero(), "D".to_owned())
+            (ActorId::new([2u8; 32]), "C".to_owned()),
+            (ActorId::new([3u8; 32]), "D".to_owned())
         ]
     );
 }
