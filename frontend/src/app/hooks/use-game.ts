@@ -28,7 +28,7 @@ export function useInitGame() {
       setPlayers(state.players.players);
       setIsAllowed(account.decodedAddress === state.players.players[state.gameState?.currentPlayer][0]);
 
-      if (state.gameState?.state?.Winner || state.gameState?.state?.winner) {
+      if (state.gameState?.state?.winner) {
         setOpenWinnerPopup(true);
       }
     } else {
