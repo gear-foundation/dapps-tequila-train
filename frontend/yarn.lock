@@ -2029,54 +2029,56 @@
     bn.js "^5.2.1"
     tslib "^2.5.0"
 
-"@polkadot/wasm-bridge@7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@polkadot/wasm-bridge/-/wasm-bridge-7.0.3.tgz#9691450830604dc4a361692a8a2a3df22fa53e96"
-  integrity sha512-q5qyhkGE9lHQmThNg6G5zCM4gYip2KtmR+De/URX7yWAO6snsinFqt066RFVuHvX1hZijrYSe/BGQABAUtH4pw==
+"@polkadot/wasm-bridge@7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/wasm-bridge/-/wasm-bridge-7.1.1.tgz#8d18ba0b8659237bff985ab8f2b07c1276ce670e"
+  integrity sha512-2YKaqrGaN+e+OjKxs1sAS822Jil6GJE8xhNTs8an7BtgEKtfBjQ/j2ZIe41ijRs4O05iI+OkxHpLEHhIm+wq0A==
+  dependencies:
+    "@polkadot/wasm-util" "7.1.1"
+    tslib "^2.5.0"
+
+"@polkadot/wasm-crypto-asmjs@7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-asmjs/-/wasm-crypto-asmjs-7.1.1.tgz#eb807317b9da0c9ec1b73bb973e0c663d4e10a1c"
+  integrity sha512-LOKdussHjRx+bwT85iuL6huiKwWZ0x3XLvo0En2U16fT/g9mx74Nmp/YpIwkDRXJ0PUgHpuPYGNMH3x2vEVgBQ==
   dependencies:
     tslib "^2.5.0"
 
-"@polkadot/wasm-crypto-asmjs@7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-asmjs/-/wasm-crypto-asmjs-7.0.3.tgz#a1bc942029979b2696a1062066d774e99a5a6b4c"
-  integrity sha512-ldMZjowYywn0Uj7jSr8a21rrlFFq/jWhCXVl21/KDcYGdFEfIajqbcrO5cHoT6w95sQgAwMWJwwDClXOaBjc/Q==
+"@polkadot/wasm-crypto-init@7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-init/-/wasm-crypto-init-7.1.1.tgz#8682b2d2fff8bab5e1fe5dc14617d4a63382dd36"
+  integrity sha512-EgbnXCPNvqfXElhsipI1XqLdVnvk46MCr0cgNE9g1sQHfOh5N9Bsjv7J4bnbv5bIb7JlpXBc9MnTas70PasaCw==
   dependencies:
+    "@polkadot/wasm-bridge" "7.1.1"
+    "@polkadot/wasm-crypto-asmjs" "7.1.1"
+    "@polkadot/wasm-crypto-wasm" "7.1.1"
+    "@polkadot/wasm-util" "7.1.1"
     tslib "^2.5.0"
 
-"@polkadot/wasm-crypto-init@7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-init/-/wasm-crypto-init-7.0.3.tgz#336af713edfcd6fdd0194fee2919781893fba577"
-  integrity sha512-W4ClfPrzOTqiX0x4h6rXjCt8UsVsbg3zU7LJFFjeLgrguPoKTLGw4h5O1rR2H7EuMFbuqdztzJn3qTjBcR03Cg==
+"@polkadot/wasm-crypto-wasm@7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-wasm/-/wasm-crypto-wasm-7.1.1.tgz#16936161bf127d04e315101c843fb3330894a3e6"
+  integrity sha512-mbo6CEt/11Wh2NDGDhVzQFpOZLE/+Hl8tUf8Y38ddRo20xAHvs09KK+cNTFRurY0P2Tq5LnF9+VzuC0bZPyRqQ==
   dependencies:
-    "@polkadot/wasm-bridge" "7.0.3"
-    "@polkadot/wasm-crypto-asmjs" "7.0.3"
-    "@polkadot/wasm-crypto-wasm" "7.0.3"
+    "@polkadot/wasm-util" "7.1.1"
     tslib "^2.5.0"
 
-"@polkadot/wasm-crypto-wasm@7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-wasm/-/wasm-crypto-wasm-7.0.3.tgz#016834b1eb2564d8a13b133ee77a4612ad873d41"
-  integrity sha512-FRjUADiA3wMkjJqQLgB0v9rbSADcb2PY/6dJi06iza9m41HebTN3x7f5D3gWTCfgJjzWLAPchY2Hwsa0WpTQkw==
+"@polkadot/wasm-crypto@7.1.1", "@polkadot/wasm-crypto@^7.0.3":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto/-/wasm-crypto-7.1.1.tgz#e70405cde67b3ec661fd74ea3ff1abbbdc0283cc"
+  integrity sha512-qaYScOVR7gUr41bP7O7OzOVJFfb9gh6KBk9xVy7gl5U9XYAqq0xqp88g528hEUa7IjFW3QVg7EeI8KsRmm0zpA==
   dependencies:
-    "@polkadot/wasm-util" "7.0.3"
+    "@polkadot/wasm-bridge" "7.1.1"
+    "@polkadot/wasm-crypto-asmjs" "7.1.1"
+    "@polkadot/wasm-crypto-init" "7.1.1"
+    "@polkadot/wasm-crypto-wasm" "7.1.1"
+    "@polkadot/wasm-util" "7.1.1"
     tslib "^2.5.0"
 
-"@polkadot/wasm-crypto@7.0.3", "@polkadot/wasm-crypto@^7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto/-/wasm-crypto-7.0.3.tgz#e07ddbeea0b45149d8e58be292ad423d646f1cb1"
-  integrity sha512-mOCLCaL9cyrU72PCc9nMNAj3zdvOzau5mOGJjLahIz+mqlHAoAmEXCAJvJ2qCo7OFl8QiDToAEGhdDWQfiHUyg==
-  dependencies:
-    "@polkadot/wasm-bridge" "7.0.3"
-    "@polkadot/wasm-crypto-asmjs" "7.0.3"
-    "@polkadot/wasm-crypto-init" "7.0.3"
-    "@polkadot/wasm-crypto-wasm" "7.0.3"
-    "@polkadot/wasm-util" "7.0.3"
-    tslib "^2.5.0"
-
-"@polkadot/wasm-util@7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@polkadot/wasm-util/-/wasm-util-7.0.3.tgz#eab59f9dac0f00ca736aff8b24925108b7b2f860"
-  integrity sha512-L9U5nSbzr5xa2YSpveP/zZxhOB6i8ibssK+ihuG+7SICYtTC0B9wJp/UnjP/c6bEDlMV3yWiNXJPBTJMGmkmIQ==
+"@polkadot/wasm-util@7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/wasm-util/-/wasm-util-7.1.1.tgz#f1c50eefef0d139394e51eb107ffb0411bac3d5d"
+  integrity sha512-FOflVMo4sXTsXhXoY9rQKfPPCiTfE+dEsuGcm6Aecau0NL24Ze/guxX6vOSDN2E2I6kf60biQU016O2RKHqtwg==
   dependencies:
     tslib "^2.5.0"
 
