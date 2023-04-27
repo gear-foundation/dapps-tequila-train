@@ -180,6 +180,10 @@ impl GameLauncher {
         }
     }
 
+    fn assert_players_count(&self) {
+        assert!((2..=8).contains(&(self.players.len() as u32)))
+    }
+
     pub fn new_with_limit(limit: u64) -> Self {
         Self::assert_limit_range(Some(limit));
 
@@ -191,11 +195,14 @@ impl GameLauncher {
 
     pub fn start(&mut self) {
         assert!(!self.is_started);
+        self.assert_players_count();
 
         self.is_started = true;
         self.game_state = GameState::new(&Players {
             players: self.players.clone(),
         });
+
+        assert!(self.game_state.is_some());
     }
 
     pub fn restart(&mut self, maybe_limit: Option<u64>) {
@@ -210,14 +217,12 @@ impl GameLauncher {
 
     pub fn register(&mut self, player: ActorId, name: String) {
         assert!(!self.is_started);
-        assert!(self
-            .players
-            .iter()
-            .find(|(p, n)| p == &player || n == &name)
-            .is_none());
+        assert!(!self.players.iter().any(|(p, n)| p == &player || n == &name));
 
         if let Some(limit) = self.maybe_limit {
-            assert!(self.players.len() as u64 <= limit);
+            assert!((self.players.len() as u64) < limit);
+        } else {
+            assert!(self.players.len() < 8);
         }
 
         self.players.push((player, name));

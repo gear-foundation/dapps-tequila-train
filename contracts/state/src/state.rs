@@ -41,7 +41,7 @@ pub mod metafns {
     }
 
     pub fn players(state: State) -> Vec<(ActorId, String)> {
-        state.players.clone()
+        state.players
     }
 
     pub fn game_state(state: State) -> GameState {
