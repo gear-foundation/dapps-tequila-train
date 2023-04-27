@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.28183170.css",
+    "main.js": "/static/js/main.9b47979f.js",
+    "static/media/tequila_state.meta.wasm": "/static/media/tequila_state.meta.9100ced80bfcb52a70d1.wasm",
+    "static/media/kanit-600.woff2": "/static/media/kanit-600.a2adb8f7c067494c0225.woff2",
+    "static/media/kanit-400.woff2": "/static/media/kanit-400.30d596e48610ef7e8932.woff2",
+    "static/media/kanit-700.woff2": "/static/media/kanit-700.4dceb6226434e96dc4e1.woff2",
+    "static/media/kanit-500.woff2": "/static/media/kanit-500.63d399e480c6301efad7.woff2",
+    "static/media/kanit-300.woff2": "/static/media/kanit-300.0c9e7f70b1047dcfa949.woff2",
+    "static/media/poppins-600.woff2": "/static/media/poppins-600.91145014c0350c248ed2.woff2",
+    "static/media/poppins-400.woff2": "/static/media/poppins-400.405055dd680fa1dcdfa2.woff2",
+    "static/media/poppins-300.woff2": "/static/media/poppins-300.39576fe9df8a22cc1bcc.woff2",
+    "static/media/poppins-700.woff2": "/static/media/poppins-700.d86662fe776dae29ea78.woff2",
+    "static/media/poppins-500.woff2": "/static/media/poppins-500.08491d3f7fe7ae88ef44.woff2",
+    "static/media/tequila_train.meta.txt": "/static/media/tequila_train.meta.5a6c4569884463bf496d.txt",
+    "static/media/gear.svg": "/static/media/gear.1331945f5213cd1ffd4d.svg",
+    "index.html": "/index.html",
+    "main.28183170.css.map": "/static/css/main.28183170.css.map",
+    "main.9b47979f.js.map": "/static/js/main.9b47979f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.28183170.css",
+    "static/js/main.9b47979f.js"
+  ]
+}
