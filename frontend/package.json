@@ -12,7 +12,7 @@
     "@gear-js/react-hooks": "0.5.15",
     "@gear-js/ui": "0.5.18",
     "@headlessui/react": "1.7.13",
-    "@mantine/form": "5.10.5",
+    "@mantine/form": "6.0.9",
     "@polkadot/api": "10.3.4",
     "@polkadot/extension-dapp": "0.45.5",
     "@polkadot/react-identicon": "3.1.4",
