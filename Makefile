@@ -1,5 +1,8 @@
 .PHONY: all contracts deploy fmt fmt-check frontend full-test init-contracts init-frontend lint nginx node pre-commit restart test test-contracts serve
 
+NIGHTLY_TOOLCHAIN_VERSION ?= 2023-03-14
+TARGET = `rustc -Vv | grep 'host: ' | sed 's/^host: \(.*\)/\1/'`
+
 all: contracts
 
 contracts:
@@ -42,9 +45,11 @@ full-test:
 	@cd contracts && cargo +nightly t -Fbinary-vendor -- --include-ignored --test-threads=1
 
 init-contracts:
-	@echo 🚂 Installing a toolchain and a target...
-	@rustup toolchain add nightly
-	@rustup target add wasm32-unknown-unknown --toolchain nightly
+	@echo ⚙️ Installing a toolchain \& a target...
+	@rustup toolchain install nightly-$(NIGHTLY_TOOLCHAIN_VERSION) --component llvm-tools-preview --component clippy
+	@rustup target add wasm32-unknown-unknown --toolchain nightly-$(NIGHTLY_TOOLCHAIN_VERSION)
+	@rm -rf ~/.rustup/toolchains/nightly-$(TARGET)
+	@ln -s ~/.rustup/toolchains/nightly-$(NIGHTLY_TOOLCHAIN_VERSION)-$(TARGET) ~/.rustup/toolchains/nightly-$(TARGET)
 
 init-frontend:
 	@echo 🚂 Installing frontent deps...
