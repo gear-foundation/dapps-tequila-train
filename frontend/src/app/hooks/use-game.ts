@@ -26,13 +26,7 @@ export function useInitGame() {
     setGame(state);
     if (state && account && state.isStarted && gameWasm) {
       setPlayers(state.players);
-      // console.log({
-      //   isAllowed: account.decodedAddress === state.players[state.gameState?.currentPlayer][0],
-      //   accountCurrent: account.decodedAddress,
-      //   playerCurrent: state.players[state.gameState?.currentPlayer][0],
-      // });
 
-      console.log(account.decodedAddress === state.players[state.gameState?.currentPlayer][0]);
       setIsAllowed(account.decodedAddress === state.players[state.gameState?.currentPlayer][0]);
 
       if (state.gameState?.state?.winner) {
