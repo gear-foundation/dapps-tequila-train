@@ -1,5 +1,7 @@
 use tequila_io::ContractMetadata;
+use gmeta::Metadata;
+use gear_wasm_builder::WasmBuilder;
 
 fn main() {
-    gear_wasm_builder::build_with_metadata::<ContractMetadata>();
+    WasmBuilder::with_meta(ContractMetadata::repr()).build();
 }
